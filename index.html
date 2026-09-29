@@ -230,7 +230,6 @@
             margin-bottom: 10px;
         }
 
-        /* فورم إضافة تقييم للزوار برا الإشراف */
         .public-review-box {
             background-color: var(--card-black);
             border: 1px solid var(--border-color);
@@ -338,87 +337,6 @@
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
         }
 
-        .admin-actions-box {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-        }
-
-        .btn-clear-all {
-            background-color: #8b0000;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .btn-clear-all:hover {
-            background-color: #b22222;
-        }
-
-        .admin-items-list {
-            margin-top: 30px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .admin-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #181818;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #262626;
-        }
-
-        .admin-item-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .admin-item-info img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-danger {
-            background-color: #8b0000;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .btn-danger:hover {
-            background-color: #b22222;
-        }
-
-        .btn-edit {
-            background-color: #b8860b;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
         footer {
             text-align: center;
             padding: 25px;
@@ -456,25 +374,7 @@
                 <h2><i class="fa-solid fa-lock"></i> لوحة تحكم المشرفين - صفاء الذهب</h2>
                 <button class="close-admin" onclick="closeAdminPanel()">إغلاق اللوحة</button>
             </div>
-            
-            <!-- نموذج رفع الكروت/الصور -->
-            <form id="perfumeForm" onsubmit="savePerfume(event)">
-                <input type="hidden" id="editIndex" value="-1">
-                <div class="form-group">
-                    <label><i class="fa-solid fa-folder-open"></i> ارفق صور الكروت من جهازك (تضغط تلقائياً):</label>
-                    <input type="file" id="imageFiles" accept="image/*" multiple>
-                </div>
-                <button type="submit" class="btn-gold" id="saveBtn"><i class="fa-solid fa-plus"></i> إضافة الصور ككروت للزوار</button>
-            </form>
-
-            <div class="admin-actions-box" style="margin-top: 25px;">
-                <button class="btn-clear-all" onclick="clearAllData()"><i class="fa-solid fa-triangle-exclamation"></i> إفراغ ذاكرة الكروت بالكامل</button>
-                <button class="btn-clear-all" onclick="clearAllReviews()"><i class="fa-solid fa-triangle-exclamation"></i> مسح جميع التقييمات</button>
-            </div>
-
-            <div class="admin-items-list" id="adminItemsList"></div>
-            
-            <div class="admin-items-list" id="adminReviewsList" style="margin-top:20px;"></div>
+            <p style="color:var(--light-gold);">الصور مدمجة ومحفوظة حالياً في الكود الأساسي للموقع للجميع.</p>
         </div>
 
         <!-- معرض الكروت وصور العطور الفاخرة -->
@@ -483,14 +383,11 @@
             <div class="perfumes-grid" id="perfumesGrid"></div>
         </section>
 
-        <!-- قسم آراء وتقييمات العملاء (للجميع) -->
+        <!-- قسم آراء وتقييمات العملاء -->
         <section id="reviewsSection">
             <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء المميزين</h2>
-            
-            <!-- شبكة عرض التقييمات -->
             <div class="reviews-grid" id="reviewsGrid"></div>
 
-            <!-- نموذج إضافة رأي للزوار (خارج الإشراف تماماً) -->
             <div class="public-review-box">
                 <form id="publicReviewForm" onsubmit="savePublicReview(event)">
                     <h3><i class="fa-solid fa-pen-nib"></i> أضف رأيك أو تقييمك للموقع</h3>
@@ -514,65 +411,25 @@
     </footer>
 
     <script>
-        let perfumes = [];
+        // قائمة الصور الـ 10 بروابط المباشرة الثابتة
+        const perfumes = [
+            { img: "https://i.ibb.co/d4Qgg1Rd/1.jpg" },
+            { img: "https://i.ibb.co/qYqrmTPP/2.jpg" },
+            { img: "https://i.ibb.co/ksBwN9CT/3.jpg" },
+            { img: "https://i.ibb.co/3YR6LZKB/4.jpg" },
+            { img: "https://i.ibb.co/fd5Xfnwx/5.jpg" },
+            { img: "https://i.ibb.co/5xhHZN0y/6.jpg" },
+            { img: "https://i.ibb.co/mCF7947B/7.jpg" },
+            { img: "https://i.ibb.co/35ZzDZ0B/8.jpg" },
+            { img: "https://i.ibb.co/QhS28Pj/9.jpg" },
+            { img: "https://i.ibb.co/39LywzMT/10.jpg" }
+        ];
+
         let reviews = [];
-
-        try {
-            perfumes = JSON.parse(localStorage.getItem('safaa_perfumes')) || [];
-        } catch (e) {
-            perfumes = [];
-            localStorage.removeItem('safaa_perfumes');
-        }
-
         try {
             reviews = JSON.parse(localStorage.getItem('safaa_reviews')) || [];
         } catch (e) {
             reviews = [];
-            localStorage.removeItem('safaa_reviews');
-        }
-
-        function saveToStorage() {
-            try {
-                localStorage.setItem('safaa_perfumes', JSON.stringify(perfumes));
-                renderPerfumes();
-                renderAdminItems();
-                return true;
-            } catch (e) {
-                alert('المساحة ممتلئة تماماً. اضغط على زر إفراغ الذاكرة لتنظيفها.');
-                return false;
-            }
-        }
-
-        function saveReviewsToStorage() {
-            try {
-                localStorage.setItem('safaa_reviews', JSON.stringify(reviews));
-                renderReviews();
-                renderAdminReviews();
-                return true;
-            } catch (e) {
-                alert('مساحة التقييمات ممتلئة.');
-                return false;
-            }
-        }
-
-        function clearAllData() {
-            if (confirm('هل أنت متأكد من رغبتك في إفراغ ذاكرة الكروت والصور؟')) {
-                localStorage.removeItem('safaa_perfumes');
-                perfumes = [];
-                renderPerfumes();
-                renderAdminItems();
-                alert('تم تطهير ذاكرة الكروت بنجاح.');
-            }
-        }
-
-        function clearAllReviews() {
-            if (confirm('هل أنت متأكد من مسح جميع التقييمات؟')) {
-                localStorage.removeItem('safaa_reviews');
-                reviews = [];
-                renderReviews();
-                renderAdminReviews();
-                alert('تم مسح جميع التقييمات بنجاح.');
-            }
         }
 
         function scrollToReviews() {
@@ -582,17 +439,12 @@
         function renderPerfumes() {
             const grid = document.getElementById('perfumesGrid');
             grid.innerHTML = '';
-            
-            if (perfumes.length === 0) {
-                grid.innerHTML = '<p style="color:var(--text-gray); grid-column: 1/-1; text-align:center; padding:30px;">لا توجد صور معروضة حالياً.</p>';
-                return;
-            }
 
             perfumes.forEach((p) => {
                 grid.innerHTML += `
                     <div class="perfume-card">
                         <div class="perfume-img-box">
-                            <img src="${p.img}" alt="عطر صفاء الذهب">
+                            <img src="${p.img}" alt="عطر صفاء الذهب" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
                         </div>
                         <div class="perfume-info">
                             <h3>عطور صفاء الذهب الملكية</h3>
@@ -632,101 +484,6 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            const val = e.target.value.trim();
-            if (val === '123456789') {
-                document.getElementById('admin-panel').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                renderAdminItems();
-                renderAdminReviews();
-                e.target.value = '';
-            }
-        });
-
-        function closeAdminPanel() {
-            document.getElementById('admin-panel').style.display = 'none';
-        }
-
-        function compressImage(file, callback) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function (event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function () {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 600;
-                    const MAX_HEIGHT = 600;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
-                    callback(dataUrl);
-                }
-            }
-        }
-
-        function savePerfume(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('imageFiles');
-            const editIndex = parseInt(document.getElementById('editIndex').value);
-
-            if (editIndex !== -1) {
-                if (fileInput.files.length > 0) {
-                    compressImage(fileInput.files[0], function(compressedDataUrl) {
-                        perfumes[editIndex] = { img: compressedDataUrl };
-                        document.getElementById('editIndex').value = "-1";
-                        document.getElementById('perfumeForm').reset();
-                        document.getElementById('saveBtn').innerHTML = `<i class="fa-solid fa-plus"></i> إضافة الصور ككروت للزوار`;
-                        saveToStorage();
-                        alert('تم استبدال الكرت بنجاح!');
-                    });
-                }
-                return;
-            }
-
-            if (fileInput.files.length > 0) {
-                let filesProcessed = 0;
-                const totalFiles = fileInput.files.length;
-                let newItems = [];
-                
-                Array.from(fileInput.files).forEach(file => {
-                    compressImage(file, function(compressedDataUrl) {
-                        newItems.push({ img: compressedDataUrl });
-                        filesProcessed++;
-                        
-                        if (filesProcessed === totalFiles) {
-                            perfumes = newItems.concat(perfumes);
-                            document.getElementById('perfumeForm').reset();
-                            if (saveToStorage()) {
-                                alert(`تم بنجاح رفع وضغط ${totalFiles} صورة وعرضها ككروت للزوار فوراً!`);
-                            }
-                        }
-                    });
-                });
-            } else {
-                alert('الرجاء اختيار صورة واحدة على الأقل للاستبدال.');
-            }
-        }
-
         function savePublicReview(e) {
             e.preventDefault();
             const name = document.getElementById('publicReviewName').value.trim();
@@ -735,82 +492,25 @@
             if (name && text) {
                 reviews.unshift({ name, text });
                 document.getElementById('publicReviewForm').reset();
-                saveReviewsToStorage();
+                try {
+                    localStorage.setItem('safaa_reviews', JSON.stringify(reviews));
+                } catch(e) {}
+                renderReviews();
                 alert('شكراً لك! تم نشر تقييمك ورأيك في الموقع بنجاح.');
             }
         }
 
-        function renderAdminItems() {
-            const list = document.getElementById('adminItemsList');
-            list.innerHTML = '<h3 style="color:var(--light-gold); margin-bottom:15px;">قائمة الكروت المسجلة (الإدارة):</h3>';
-            
-            if (perfumes.length === 0) {
-                list.innerHTML += '<p style="color:var(--text-gray);">لا توجد كروت حالياً.</p>';
-                return;
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            if (e.target.value.trim() === '123456789') {
+                document.getElementById('admin-panel').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                e.target.value = '';
             }
+        });
 
-            perfumes.forEach((p, index) => {
-                list.innerHTML += `
-                    <div class="admin-item-row">
-                        <div class="admin-item-info">
-                            <img src="${p.img}" alt="صورة الكرت">
-                            <div>
-                                <h4 style="color:#fff; font-size:14px;">كرت رقم (${index + 1})</h4>
-                            </div>
-                        </div>
-                        <div class="admin-actions">
-                            <button class="btn-edit" onclick="editPerfume(${index})"><i class="fa-solid fa-pen"></i> استبدال</button>
-                            <button class="btn-danger" onclick="deletePerfume(${index})"><i class="fa-solid fa-trash"></i> حذف</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminReviews() {
-            const list = document.getElementById('adminReviewsList');
-            list.innerHTML = '<h3 style="color:var(--light-gold); margin-bottom:15px;">قائمة التقييمات المسجلة (الإدارة):</h3>';
-            
-            if (reviews.length === 0) {
-                list.innerHTML += '<p style="color:var(--text-gray);">لا توجد تقييمات حالياً.</p>';
-                return;
-            }
-
-            reviews.forEach((r, index) => {
-                list.innerHTML += `
-                    <div class="admin-item-row">
-                        <div class="admin-item-info">
-                            <div>
-                                <h4 style="color:var(--primary-gold); font-size:14px;">${escapeHtml(r.name)}</h4>
-                                <p style="color:#aaa; font-size:12px; max-width:250px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(r.text)}</p>
-                            </div>
-                        </div>
-                        <div class="admin-actions">
-                            <button class="btn-danger" onclick="deleteReview(${index})"><i class="fa-solid fa-trash"></i> حذف</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function deletePerfume(index) {
-            if (confirm('هل أنت متأكد من حذف هذا الكرت؟')) {
-                perfumes.splice(index, 1);
-                saveToStorage();
-            }
-        }
-
-        function deleteReview(index) {
-            if (confirm('هل أنت متأكد من حذف هذا التقييم؟')) {
-                reviews.splice(index, 1);
-                saveReviewsToStorage();
-            }
-        }
-
-        function editPerfume(index) {
-            document.getElementById('editIndex').value = index;
-            document.getElementById('saveBtn').innerHTML = `<i class="fa-solid fa-save"></i> حفظ الاستبدال`;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function closeAdminPanel() {
+            document.getElementById('admin-panel').style.display = 'none';
         }
 
         renderPerfumes();
