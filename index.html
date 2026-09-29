@@ -167,19 +167,22 @@
         .perfume-img-box {
             width: 100%;
             height: 280px;
-            background-color: #000;
+            background-color: #050505;
             overflow: hidden;
         }
 
+        /* التعديل المضاف لإظهار الصور بكامل جودتها وأبعادها بدون قص */
         .perfume-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
+            object-fit: contain;
+            background-color: #050505;
+            image-rendering: -webkit-optimize-contrast;
+            transition: transform 0.5s ease;
         }
 
         .perfume-card:hover .perfume-img-box img {
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
         .perfume-info {
