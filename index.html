@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفاء الذهب | Safaa El Dahab - للعطور الفاخرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --dark-gold: #aa820a;
+            --light-gold: #f3e5ab;
+            --bg-black: #0b0b0b;
+            --card-black: #141414;
+            --border-color: #33270a;
+            --text-white: #f5f5f5;
+            --text-gray: #aaaaaa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #000 0%, #1a1505 100%);
+            border-bottom: 2px solid var(--primary-gold);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .logo-area h1 {
+            color: var(--primary-gold);
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .logo-area p {
+            color: var(--text-gray);
+            font-size: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            width: 260px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 20px 10px 45px;
+            background-color: #1a1a1a;
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            color: var(--text-white);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+
+        .btn-reviews-nav {
+            background: transparent;
+            border: 2px solid var(--primary-gold);
+            color: var(--light-gold);
+            padding: 8px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reviews-nav:hover {
+            background: var(--primary-gold);
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            color: var(--primary-gold);
+            font-size: 24px;
+            margin-bottom: 25px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* معرض الكروت */
+        .perfumes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .perfume-card {
+            background-color: var(--card-black);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .perfume-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+            border-color: var(--primary-gold);
+        }
+
+        .perfume-img-box {
+            width: 100%;
+            height: 280px;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .perfume-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .perfume-card:hover .perfume-img-box img {
+            transform: scale(1.08);
+        }
+
+        .perfume-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .perfume-info h3 {
+            color: var(--light-gold);
+            font-size: 16px;
+        }
+
+        /* قسم التقييمات للزوار */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .review-card {
+            background-color: var(--card-black);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .review-card h4 {
+            color: var(--primary-gold);
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .review-card p {
+            color: var(--text-white);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .review-stars {
+            color: #ffc107;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        /* فورم إضافة تقييم للزوار برا الإشراف */
+        .public-review-box {
+            background-color: var(--card-black);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .public-review-box h3 {
+            color: var(--light-gold);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* لوحة تحكم المشرفين */
+        #admin-panel {
+            display: none;
+            background: #111;
+            border: 2px solid var(--primary-gold);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .admin-header h2 {
+            color: var(--primary-gold);
+            font-size: 22px;
+        }
+
+        .close-admin {
+            background: #331111;
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            padding: 6px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .close-admin:hover {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--light-gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .btn-gold:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .admin-actions-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn-clear-all {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn-clear-all:hover {
+            background-color: #b22222;
+        }
+
+        .admin-items-list {
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .admin-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #181818;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #262626;
+        }
+
+        .admin-item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-item-info img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-danger {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background-color: #b22222;
+        }
+
+        .btn-edit {
+            background-color: #b8860b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #050505;
+            color: var(--text-gray);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-right">
+            <div class="logo-area">
+                <h1>صفاء الذهب</h1>
+                <p>Safaa El Dahab Perfumes</p>
+            </div>
+        </div>
+        <div class="header-left">
+            <button class="btn-reviews-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="">
+                <i class="fa-solid fa-search"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- لوحة تحكم المشرفين -->
+        <div id="admin-panel">
+            <div class="admin-header">
+                <h2><i class="fa-solid fa-lock"></i> لوحة تحكم المشرفين - صفاء الذهب</h2>
+                <button class="close-admin" onclick="closeAdminPanel()">إغلاق اللوحة</button>
+            </div>
+            
+            <!-- نموذج رفع الكروت/الصور -->
+            <form id="perfumeForm" onsubmit="savePerfume(event)">
+                <input type="hidden" id="editIndex" value="-1">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-folder-open"></i> ارفق صور الكروت من جهازك (تضغط تلقائياً):</label>
+                    <input type="file" id="imageFiles" accept="image/*" multiple>
+                </div>
+                <button type="submit" class="btn-gold" id="saveBtn"><i class="fa-solid fa-plus"></i> إضافة الصور ككروت للزوار</button>
+            </form>
+
+            <div class="admin-actions-box" style="margin-top: 25px;">
+                <button class="btn-clear-all" onclick="clearAllData()"><i class="fa-solid fa-triangle-exclamation"></i> إفراغ ذاكرة الكروت بالكامل</button>
+                <button class="btn-clear-all" onclick="clearAllReviews()"><i class="fa-solid fa-triangle-exclamation"></i> مسح جميع التقييمات</button>
+            </div>
+
+            <div class="admin-items-list" id="adminItemsList"></div>
+            
+            <div class="admin-items-list" id="adminReviewsList" style="margin-top:20px;"></div>
+        </div>
+
+        <!-- معرض الكروت وصور العطور الفاخرة -->
+        <section>
+            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة الكروت والعطور الملكية</h2>
+            <div class="perfumes-grid" id="perfumesGrid"></div>
+        </section>
+
+        <!-- قسم آراء وتقييمات العملاء (للجميع) -->
+        <section id="reviewsSection">
+            <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء المميزين</h2>
+            
+            <!-- شبكة عرض التقييمات -->
+            <div class="reviews-grid" id="reviewsGrid"></div>
+
+            <!-- نموذج إضافة رأي للزوار (خارج الإشراف تماماً) -->
+            <div class="public-review-box">
+                <form id="publicReviewForm" onsubmit="savePublicReview(event)">
+                    <h3><i class="fa-solid fa-pen-nib"></i> أضف رأيك أو تقييمك للموقع</h3>
+                    <div class="form-group">
+                        <label>اسم الشخص:</label>
+                        <input type="text" id="publicReviewName" placeholder="اكتب اسمك هنا..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>الرأي أو التعليق:</label>
+                        <textarea id="publicReviewText" rows="3" placeholder="اكتب رأيك في العطور أو الخدمة..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-gold"><i class="fa-solid fa-paper-plane"></i> إرسال ونشر التقييم فوراً</button>
+                </form>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; 2026 - براند عطور صفاء الذهب (Safaa El Dahab)
+    </footer>
+
+    <script>
+        let perfumes = [];
+        let reviews = [];
+
+        try {
+            perfumes = JSON.parse(localStorage.getItem('safaa_perfumes')) || [];
+        } catch (e) {
+            perfumes = [];
+            localStorage.removeItem('safaa_perfumes');
+        }
+
+        try {
+            reviews = JSON.parse(localStorage.getItem('safaa_reviews')) || [];
+        } catch (e) {
+            reviews = [];
+            localStorage.removeItem('safaa_reviews');
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('safaa_perfumes', JSON.stringify(perfumes));
+                renderPerfumes();
+                renderAdminItems();
+                return true;
+            } catch (e) {
+                alert('المساحة ممتلئة تماماً. اضغط على زر إفراغ الذاكرة لتنظيفها.');
+                return false;
+            }
+        }
+
+        function saveReviewsToStorage() {
+            try {
+                localStorage.setItem('safaa_reviews', JSON.stringify(reviews));
+                renderReviews();
+                renderAdminReviews();
+                return true;
+            } catch (e) {
+                alert('مساحة التقييمات ممتلئة.');
+                return false;
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('هل أنت متأكد من رغبتك في إفراغ ذاكرة الكروت والصور؟')) {
+                localStorage.removeItem('safaa_perfumes');
+                perfumes = [];
+                renderPerfumes();
+                renderAdminItems();
+                alert('تم تطهير ذاكرة الكروت بنجاح.');
+            }
+        }
+
+        function clearAllReviews() {
+            if (confirm('هل أنت متأكد من مسح جميع التقييمات؟')) {
+                localStorage.removeItem('safaa_reviews');
+                reviews = [];
+                renderReviews();
+                renderAdminReviews();
+                alert('تم مسح جميع التقييمات بنجاح.');
+            }
+        }
+
+        function scrollToReviews() {
+            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderPerfumes() {
+            const grid = document.getElementById('perfumesGrid');
+            grid.innerHTML = '';
+            
+            if (perfumes.length === 0) {
+                grid.innerHTML = '<p style="color:var(--text-gray); grid-column: 1/-1; text-align:center; padding:30px;">لا توجد صور معروضة حالياً.</p>';
+                return;
+            }
+
+            perfumes.forEach((p) => {
+                grid.innerHTML += `
+                    <div class="perfume-card">
+                        <div class="perfume-img-box">
+                            <img src="${p.img}" alt="عطر صفاء الذهب">
+                        </div>
+                        <div class="perfume-info">
+                            <h3>عطور صفاء الذهب الملكية</h3>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderReviews() {
+            const grid = document.getElementById('reviewsGrid');
+            grid.innerHTML = '';
+            
+            if (reviews.length === 0) {
+                grid.innerHTML = '<p style="color:var(--text-gray); grid-column: 1/-1; text-align:center; padding:20px;">لا توجد تقييمات مضافة حتى الآن. كن أول من يضيف رأيه!</p>';
+                return;
+            }
+
+            reviews.forEach((r) => {
+                grid.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
+                        <p>${escapeHtml(r.text)}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            if (val === '123456789') {
+                document.getElementById('admin-panel').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                renderAdminItems();
+                renderAdminReviews();
+                e.target.value = '';
+            }
+        });
+
+        function closeAdminPanel() {
+            document.getElementById('admin-panel').style.display = 'none';
+        }
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 600;
+                    const MAX_HEIGHT = 600;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+                    callback(dataUrl);
+                }
+            }
+        }
+
+        function savePerfume(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('imageFiles');
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+
+            if (editIndex !== -1) {
+                if (fileInput.files.length > 0) {
+                    compressImage(fileInput.files[0], function(compressedDataUrl) {
+                        perfumes[editIndex] = { img: compressedDataUrl };
+                        document.getElementById('editIndex').value = "-1";
+                        document.getElementById('perfumeForm').reset();
+                        document.getElementById('saveBtn').innerHTML = `<i class="fa-solid fa-plus"></i> إضافة الصور ككروت للزوار`;
+                        saveToStorage();
+                        alert('تم استبدال الكرت بنجاح!');
+                    });
+                }
+                return;
+            }
+
+            if (fileInput.files.length > 0) {
+                let filesProcessed = 0;
+                const totalFiles = fileInput.files.length;
+                let newItems = [];
+                
+                Array.from(fileInput.files).forEach(file => {
+                    compressImage(file, function(compressedDataUrl) {
+                        newItems.push({ img: compressedDataUrl });
+                        filesProcessed++;
+                        
+                        if (filesProcessed === totalFiles) {
+                            perfumes = newItems.concat(perfumes);
+                            document.getElementById('perfumeForm').reset();
+                            if (saveToStorage()) {
+                                alert(`تم بنجاح رفع وضغط ${totalFiles} صورة وعرضها ككروت للزوار فوراً!`);
+                            }
+                        }
+                    });
+                });
+            } else {
+                alert('الرجاء اختيار صورة واحدة على الأقل للاستبدال.');
+            }
+        }
+
+        function savePublicReview(e) {
+            e.preventDefault();
+            const name = document.getElementById('publicReviewName').value.trim();
+            const text = document.getElementById('publicReviewText').value.trim();
+
+            if (name && text) {
+                reviews.unshift({ name, text });
+                document.getElementById('publicReviewForm').reset();
+                saveReviewsToStorage();
+                alert('شكراً لك! تم نشر تقييمك ورأيك في الموقع بنجاح.');
+            }
+        }
+
+        function renderAdminItems() {
+            const list = document.getElementById('adminItemsList');
+            list.innerHTML = '<h3 style="color:var(--light-gold); margin-bottom:15px;">قائمة الكروت المسجلة (الإدارة):</h3>';
+            
+            if (perfumes.length === 0) {
+                list.innerHTML += '<p style="color:var(--text-gray);">لا توجد كروت حالياً.</p>';
+                return;
+            }
+
+            perfumes.forEach((p, index) => {
+                list.innerHTML += `
+                    <div class="admin-item-row">
+                        <div class="admin-item-info">
+                            <img src="${p.img}" alt="صورة الكرت">
+                            <div>
+                                <h4 style="color:#fff; font-size:14px;">كرت رقم (${index + 1})</h4>
+                            </div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="btn-edit" onclick="editPerfume(${index})"><i class="fa-solid fa-pen"></i> استبدال</button>
+                            <button class="btn-danger" onclick="deletePerfume(${index})"><i class="fa-solid fa-trash"></i> حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminReviews() {
+            const list = document.getElementById('adminReviewsList');
+            list.innerHTML = '<h3 style="color:var(--light-gold); margin-bottom:15px;">قائمة التقييمات المسجلة (الإدارة):</h3>';
+            
+            if (reviews.length === 0) {
+                list.innerHTML += '<p style="color:var(--text-gray);">لا توجد تقييمات حالياً.</p>';
+                return;
+            }
+
+            reviews.forEach((r, index) => {
+                list.innerHTML += `
+                    <div class="admin-item-row">
+                        <div class="admin-item-info">
+                            <div>
+                                <h4 style="color:var(--primary-gold); font-size:14px;">${escapeHtml(r.name)}</h4>
+                                <p style="color:#aaa; font-size:12px; max-width:250px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(r.text)}</p>
+                            </div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="btn-danger" onclick="deleteReview(${index})"><i class="fa-solid fa-trash"></i> حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function deletePerfume(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الكرت؟')) {
+                perfumes.splice(index, 1);
+                saveToStorage();
+            }
+        }
+
+        function deleteReview(index) {
+            if (confirm('هل أنت متأكد من حذف هذا التقييم؟')) {
+                reviews.splice(index, 1);
+                saveReviewsToStorage();
+            }
+        }
+
+        function editPerfume(index) {
+            document.getElementById('editIndex').value = index;
+            document.getElementById('saveBtn').innerHTML = `<i class="fa-solid fa-save"></i> حفظ الاستبدال`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderPerfumes();
+        renderReviews();
+    </script>
+</body>
+</html>
