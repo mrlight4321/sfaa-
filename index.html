@@ -171,7 +171,6 @@
             overflow: hidden;
         }
 
-        /* التعديل المضاف لإظهار الصور بكامل جودتها وأبعادها بدون قص */
         .perfume-img-box img {
             width: 100%;
             height: 100%;
@@ -195,7 +194,7 @@
             font-size: 16px;
         }
 
-        /* قسم التقييمات للزوار */
+        /* قسم التقييمات */
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -251,7 +250,7 @@
             gap: 8px;
         }
 
-        /* لوحة تحكم المشرفين */
+        /* لوحة التحكم */
         #admin-panel {
             display: none;
             background: #111;
@@ -413,8 +412,28 @@
         جميع الحقوق محفوظة &copy; 2026 - براند عطور صفاء الذهب (Safaa El Dahab)
     </footer>
 
+    <!-- مكتبات Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
-        // قائمة الصور الـ 10 بروابط المباشرة الثابتة
+        // إعدادات Firebase الخاصة بمشروعك
+        const firebaseConfig = {
+            apiKey: "AIzaSyATdsvoL0gsQuqDQwLpA6ENo_bK-GhY3hs",
+            authDomain: "safaa-perfumes.firebaseapp.com",
+            databaseURL: "https://safaa-perfumes-default-rtdb.firebaseio.com",
+            projectId: "safaa-perfumes",
+            storageBucket: "safaa-perfumes.firebasestorage.app",
+            messagingSenderId: "787687900074",
+            appId: "1:787687900074:web:47a587ed116de3624621d3",
+            measurementId: "G-TLDLNHHT89"
+        };
+
+        // تهيئة الـ Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // قائمة الصور الـ 10
         const perfumes = [
             { img: "https://i.ibb.co/d4Qgg1Rd/1.jpg" },
             { img: "https://i.ibb.co/qYqrmTPP/2.jpg" },
@@ -427,13 +446,6 @@
             { img: "https://i.ibb.co/QhS28Pj/9.jpg" },
             { img: "https://i.ibb.co/39LywzMT/10.jpg" }
         ];
-
-        let reviews = [];
-        try {
-            reviews = JSON.parse(localStorage.getItem('safaa_reviews')) || [];
-        } catch (e) {
-            reviews = [];
-        }
 
         function scrollToReviews() {
             document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
@@ -457,29 +469,37 @@
             });
         }
 
-        function renderReviews() {
+        // قراءة التقييمات لحظياً من Firebase
+        function listenToReviews() {
             const grid = document.getElementById('reviewsGrid');
-            grid.innerHTML = '';
-            
-            if (reviews.length === 0) {
-                grid.innerHTML = '<p style="color:var(--text-gray); grid-column: 1/-1; text-align:center; padding:20px;">لا توجد تقييمات مضافة حتى الآن. كن أول من يضيف رأيه!</p>';
-                return;
-            }
+            const reviewsRef = database.ref('reviews');
 
-            reviews.forEach((r) => {
-                grid.innerHTML += `
-                    <div class="review-card">
-                        <div class="review-stars">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
+            reviewsRef.on('value', (snapshot) => {
+                grid.innerHTML = '';
+                const data = snapshot.val();
+
+                if (!data) {
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column: 1/-1; text-align:center; padding:20px;">لا توجد تقييمات حتى الآن. كن أول من يضيف رأيه!</p>';
+                    return;
+                }
+
+                const reviewsList = Object.values(data).reverse();
+
+                reviewsList.forEach((r) => {
+                    grid.innerHTML += `
+                        <div class="review-card">
+                            <div class="review-stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
+                            <p>${escapeHtml(r.text)}</p>
                         </div>
-                        <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
-                        <p>${escapeHtml(r.text)}</p>
-                    </div>
-                `;
+                    `;
+                });
             });
         }
 
@@ -487,19 +507,29 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
+        // حفظ تقييم جديد في Firebase
         function savePublicReview(e) {
             e.preventDefault();
-            const name = document.getElementById('publicReviewName').value.trim();
-            const text = document.getElementById('publicReviewText').value.trim();
+            const nameInput = document.getElementById('publicReviewName');
+            const textInput = document.getElementById('publicReviewText');
+
+            const name = nameInput.value.trim();
+            const text = textInput.value.trim();
 
             if (name && text) {
-                reviews.unshift({ name, text });
-                document.getElementById('publicReviewForm').reset();
-                try {
-                    localStorage.setItem('safaa_reviews', JSON.stringify(reviews));
-                } catch(e) {}
-                renderReviews();
-                alert('شكراً لك! تم نشر تقييمك ورأيك في الموقع بنجاح.');
+                const newReviewRef = database.ref('reviews').push();
+                newReviewRef.set({
+                    name: name,
+                    text: text,
+                    timestamp: Date.now()
+                }, (error) => {
+                    if (error) {
+                        alert('حدث خطأ أثناء حفظ التقييم.');
+                    } else {
+                        document.getElementById('publicReviewForm').reset();
+                        alert('شكراً لك! تم نشر تقييمك فوراً لجميع الزوار.');
+                    }
+                });
             }
         }
 
@@ -517,7 +547,7 @@
         }
 
         renderPerfumes();
-        renderReviews();
+        listenToReviews();
     </script>
 </body>
 </html>
