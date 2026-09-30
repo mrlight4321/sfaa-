@@ -374,7 +374,7 @@
 
         <!-- معرض العطور -->
         <section>
-            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة العطور والمنتجات الفاخرة</h2>
+            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة العطور والمنتجات</h2>
             <div class="perfumes-grid" id="perfumesGrid"></div>
         </section>
 
@@ -423,7 +423,7 @@
     </div>
 
     <footer>
-        جميع الحقوق محفوظة &copy; 2026 - براند عطور صفاء الذهب (Safaa El Dahab)
+        جميع الحقوق محفوظة &copy; 2026 - صفاء الذهب (Safaa El Dahab)
     </footer>
 
     <!-- Firebase SDKs -->
@@ -449,18 +449,18 @@
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isAdminLoggedIn = false;
 
-        // الصور الـ 10 الأساسية بروابط الصورة المباشرة الصحيحة
+        // الصور الـ 10 الأساسية المباشرة
         const defaultPerfumes = [
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Mxct8rcf/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/LXLdRyV8/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/wZk0wk4G/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/6J12yZC3/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JRYyFHgC/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Zz9PKwTQ/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/5gNQy6hF/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JWjHPZCq/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/DDFf3wks/image.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/j91mXPfp/image.jpg", price: "" }
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/Mxct8rcf/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/LXLdRyV8/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/wZk0wk4G/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/6J12yZC3/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/JRYyFHgC/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/Zz9PKwTQ/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/5gNQy6hF/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/JWjHPZCq/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/DDFf3wks/image.jpg", price: "" },
+            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/j91mXPfp/image.jpg", price: "" }
         ];
 
         auth.onAuthStateChanged((user) => {
@@ -484,23 +484,26 @@
                 grid.innerHTML = '';
                 const data = snapshot.val();
 
-                let allPerfumes = [...defaultPerfumes];
+                let dynamicPerfumes = [];
 
                 if (data) {
                     Object.keys(data).forEach((key) => {
-                        allPerfumes.unshift({
+                        dynamicPerfumes.push({
                             id: key,
                             ...data[key]
                         });
                     });
                 }
 
+                // دمج الصور الديناميكية المضافة مع التشكيلة الافتراضية
+                const allPerfumes = [...dynamicPerfumes, ...defaultPerfumes];
+
                 allPerfumes.forEach((p) => {
                     grid.innerHTML += `
                         <div class="perfume-card">
                             ${(isAdminLoggedIn && p.id) ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${p.id}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
                             <div class="perfume-img-box">
-                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب';">
+                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500';">
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
