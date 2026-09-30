@@ -194,6 +194,13 @@
             font-size: 16px;
         }
 
+        .perfume-price {
+            color: var(--primary-gold);
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+
         /* قسم التقييمات */
         .reviews-grid {
             display: grid;
@@ -362,7 +369,7 @@
         <div class="header-left">
             <button class="btn-reviews-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="">
+                <input type="text" id="searchInput" placeholder="بحث...">
                 <i class="fa-solid fa-search"></i>
             </div>
         </div>
@@ -370,13 +377,38 @@
 
     <div class="container">
 
-        <!-- لوحة تحكم المشرفين -->
+        <!-- لوحة تحكم المشرفين المحدثة -->
         <div id="admin-panel">
             <div class="admin-header">
                 <h2><i class="fa-solid fa-lock"></i> لوحة تحكم المشرفين - صفاء الذهب</h2>
                 <button class="close-admin" onclick="closeAdminPanel()">إغلاق اللوحة</button>
             </div>
-            <p style="color:var(--light-gold);">الصور مدمجة ومحفوظة حالياً في الكود الأساسي للموقع للجميع.</p>
+
+            <!-- إضافة عطر جديد -->
+            <div style="margin-bottom: 30px; border-bottom: 1px dashed var(--border-color); padding-bottom: 20px;">
+                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد للمعرض</h3>
+                <form id="addPerfumeForm" onsubmit="addNewPerfume(event)">
+                    <div class="form-group">
+                        <label>اسم العطر:</label>
+                        <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر الملكية الفاخر" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رابط صورة العطر (Image URL):</label>
+                        <input type="url" id="adminPerfumeImg" placeholder="https://i.ibb.co/..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر (اختياري):</label>
+                        <input type="text" id="adminPerfumePrice" placeholder="مثال: 450 ج.م">
+                    </div>
+                    <button type="submit" class="btn-gold"><i class="fa-solid fa-upload"></i> إضافة العطر فوراً</button>
+                </form>
+            </div>
+
+            <!-- التحكم في التقييمات -->
+            <div>
+                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-tasks"></i> إدارة البيانات والتقييمات</h3>
+                <button class="btn-gold" style="background: #a82323; color: #fff;" onclick="clearAllReviews()"><i class="fa-solid fa-trash"></i> مسح جميع التقييمات من قاعدة البيانات</button>
+            </div>
         </div>
 
         <!-- معرض الكروت وصور العطور الفاخرة -->
@@ -417,7 +449,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // إعدادات Firebase الخاصة بمشروعك
+        // إعدادات Firebase الخاص بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyATdsvoL0gsQuqDQwLpA6ENo_bK-GhY3hs",
             authDomain: "safaa-perfumes.firebaseapp.com",
@@ -433,24 +465,25 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // قائمة الصور الـ 10
-        const perfumes = [
-            { img: "https://i.ibb.co/d4Qgg1Rd/1.jpg" },
-            { img: "https://i.ibb.co/qYqrmTPP/2.jpg" },
-            { img: "https://i.ibb.co/ksBwN9CT/3.jpg" },
-            { img: "https://i.ibb.co/3YR6LZKB/4.jpg" },
-            { img: "https://i.ibb.co/fd5Xfnwx/5.jpg" },
-            { img: "https://i.ibb.co/5xhHZN0y/6.jpg" },
-            { img: "https://i.ibb.co/mCF7947B/7.jpg" },
-            { img: "https://i.ibb.co/35ZzDZ0B/8.jpg" },
-            { img: "https://i.ibb.co/QhS28Pj/9.jpg" },
-            { img: "https://i.ibb.co/39LywzMT/10.jpg" }
+        // قائمة الصور الافتراضية
+        let perfumes = [
+            { img: "https://i.ibb.co/d4Qgg1Rd/1.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/qYqrmTPP/2.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/ksBwN9CT/3.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/3YR6LZKB/4.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/fd5Xfnwx/5.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/5xhHZN0y/6.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/mCF7947B/7.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/35ZzDZ0B/8.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/QhS28Pj/9.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
+            { img: "https://i.ibb.co/39LywzMT/10.jpg", title: "عطور صفاء الذهب الملكية", price: "" }
         ];
 
         function scrollToReviews() {
             document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
+        // عرض العطور
         function renderPerfumes() {
             const grid = document.getElementById('perfumesGrid');
             grid.innerHTML = '';
@@ -459,14 +492,35 @@
                 grid.innerHTML += `
                     <div class="perfume-card">
                         <div class="perfume-img-box">
-                            <img src="${p.img}" alt="عطر صفاء الذهب" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
+                            <img src="${p.img}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
                         </div>
                         <div class="perfume-info">
-                            <h3>عطور صفاء الذهب الملكية</h3>
+                            <h3>${p.title}</h3>
+                            ${p.price ? `<p class="perfume-price">${p.price}</p>` : ''}
                         </div>
                     </div>
                 `;
             });
+        }
+
+        // إضافة عطر جديد من اللوحة
+        function addNewPerfume(e) {
+            e.preventDefault();
+            const title = document.getElementById('adminPerfumeTitle').value.trim();
+            const imgUrl = document.getElementById('adminPerfumeImg').value.trim();
+            const price = document.getElementById('adminPerfumePrice').value.trim();
+
+            if (imgUrl) {
+                perfumes.unshift({
+                    img: imgUrl,
+                    title: title || "عطور صفاء الذهب الملكية",
+                    price: price || ""
+                });
+
+                renderPerfumes();
+                document.getElementById('addPerfumeForm').reset();
+                alert('تمت إضافة العطر بنجاح للمعرض!');
+            }
         }
 
         // قراءة التقييمات لحظياً من Firebase
@@ -507,7 +561,7 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        // حفظ تقييم جديد في Firebase
+        // حفظ تقييم جديد
         function savePublicReview(e) {
             e.preventDefault();
             const nameInput = document.getElementById('publicReviewName');
@@ -533,6 +587,16 @@
             }
         }
 
+        // مسح جميع التقييمات من الإدارة
+        function clearAllReviews() {
+            if (confirm("هل أنت متأكد من رغبتك في حذف جميع التقييمات؟")) {
+                database.ref('reviews').remove()
+                    .then(() => alert("تم حذف جميع التقييمات بنجاح."))
+                    .catch((err) => alert("حدث خطأ أثناء الحذف: " + err.message));
+            }
+        }
+
+        // فتح لوحة التحكم عند كتابة 123456789
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', (e) => {
             if (e.target.value.trim() === '123456789') {
