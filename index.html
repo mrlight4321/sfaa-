@@ -143,7 +143,7 @@
         .perfume-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             transition: transform 0.5s ease;
         }
 
@@ -351,7 +351,7 @@
         <!-- لوحة التحكم للمشرف -->
         <div id="admin-panel">
             <div class="admin-header">
-                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم (المشرف: nooreldeen834@gmail.com)</h2>
+                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم</h2>
             </div>
 
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
@@ -361,7 +361,7 @@
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
                 <div class="form-group">
-                    <label>رابط صورة العطر (Image URL):</label>
+                    <label>رابط صورة العطر المباشر (Direct Image URL):</label>
                     <input type="url" id="adminPerfumeImg" placeholder="https://i.ibb.co/..." required>
                 </div>
                 <div class="form-group">
@@ -372,7 +372,7 @@
             </form>
         </div>
 
-        <!-- معرض العطور مع الصور الجديدة -->
+        <!-- معرض العطور -->
         <section>
             <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة العطور والمنتجات الفاخرة</h2>
             <div class="perfumes-grid" id="perfumesGrid"></div>
@@ -449,18 +449,18 @@
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isAdminLoggedIn = false;
 
-        // الصور الـ 10 الأساسية
+        // الصور الـ 10 الأساسية بروابط الصورة المباشرة الصحيحة
         const defaultPerfumes = [
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Mxct8rcf/1.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/LXLdRyV8/2.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/wZk0wk4G/3.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/6J12yZC3/4.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JRYyFHgC/5.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Zz9PKwTQ/6.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/5gNQy6hF/7.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JWjHPZCq/8.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/DDFf3wks/9.jpg", price: "" },
-            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/j91mXPfp/10.jpg", price: "" }
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Mxct8rcf/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/LXLdRyV8/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/wZk0wk4G/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/6J12yZC3/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JRYyFHgC/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Zz9PKwTQ/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/5gNQy6hF/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JWjHPZCq/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/DDFf3wks/image.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/j91mXPfp/image.jpg", price: "" }
         ];
 
         auth.onAuthStateChanged((user) => {
@@ -500,7 +500,7 @@
                         <div class="perfume-card">
                             ${(isAdminLoggedIn && p.id) ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${p.id}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
                             <div class="perfume-img-box">
-                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
+                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب';">
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
