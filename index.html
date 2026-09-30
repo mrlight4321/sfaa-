@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صفاء الذهب | Safaa El Dahab - للعطور الفاخرة</title>
+    <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --primary-gold: #d4af37;
@@ -34,12 +36,12 @@
         header {
             background: linear-gradient(135deg, #000 0%, #1a1505 100%);
             border-bottom: 2px solid var(--primary-gold);
-            padding: 20px 5%;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -49,13 +51,13 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
         .logo-area h1 {
             color: var(--primary-gold);
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
@@ -66,10 +68,35 @@
             font-size: 12px;
         }
 
+        .header-phones {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(212, 175, 55, 0.08);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header-phones a {
+            color: var(--light-gold);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .header-phones a:hover {
+            color: var(--primary-gold);
+        }
+
         .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -81,11 +108,11 @@
             border-radius: 30px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             transition: 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn-nav:hover {
@@ -102,7 +129,7 @@
 
         .section-title {
             color: var(--primary-gold);
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 25px;
             border-bottom: 1px dashed var(--border-color);
             padding-bottom: 10px;
@@ -113,7 +140,7 @@
 
         .perfumes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 25px;
             margin-bottom: 50px;
         }
@@ -158,7 +185,7 @@
 
         .perfume-info h3 {
             color: var(--light-gold);
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .perfume-price {
@@ -188,7 +215,7 @@
 
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -203,7 +230,7 @@
 
         .review-card h4 {
             color: var(--primary-gold);
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
@@ -233,7 +260,7 @@
         .public-review-box h3 {
             color: var(--light-gold);
             margin-bottom: 15px;
-            font-size: 18px;
+            font-size: 17px;
         }
 
         .modal {
@@ -321,12 +348,29 @@
 
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px 20px;
             background: #050505;
             color: var(--text-gray);
             border-top: 1px solid var(--border-color);
             margin-top: 50px;
             font-size: 13px;
+        }
+
+        .footer-phones {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-phones a {
+            color: var(--primary-gold);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
@@ -337,6 +381,11 @@
             <div class="logo-area">
                 <h1>صفاء الذهب</h1>
                 <p>Safaa El Dahab Perfumes</p>
+            </div>
+            <div class="header-phones">
+                <a href="tel:01112720021"><i class="fa-solid fa-phone"></i> 01112720021</a>
+                <span style="color:var(--border-color);">|</span>
+                <a href="tel:01121130014"><i class="fa-solid fa-phone"></i> 01121130014</a>
             </div>
         </div>
         <div class="header-left">
@@ -361,8 +410,8 @@
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
                 <div class="form-group">
-                    <label>رابط صورة العطر المباشر (Direct Image URL):</label>
-                    <input type="url" id="adminPerfumeImg" placeholder="https://i.ibb.co/..." required>
+                    <label>رابط صورة العطر (URL):</label>
+                    <input type="url" id="adminPerfumeImg" placeholder="https://..." required>
                 </div>
                 <div class="form-group">
                     <label>السعر:</label>
@@ -410,8 +459,8 @@
             </div>
             <form onsubmit="handleAdminLogin(event)">
                 <div class="form-group">
-                    <label>البريد الإلكتروني:</label>
-                    <input type="email" id="loginEmail" placeholder="nooreldeen834@gmail.com" required>
+                    <label>أدخل إيميل المشرف:</label>
+                    <input type="email" id="loginEmail" placeholder="أدخل إيميل المشرف..." required>
                 </div>
                 <div class="form-group">
                     <label>كلمة المرور:</label>
@@ -423,7 +472,11 @@
     </div>
 
     <footer>
-        جميع الحقوق محفوظة &copy; 2026 - صفاء الذهب (Safaa El Dahab)
+        <div>جميع الحقوق محفوظة &copy; 2026 - صفاء الذهب (Safaa El Dahab)</div>
+        <div class="footer-phones">
+            <a href="tel:01112720021"><i class="fa-solid fa-phone"></i> 01112720021</a>
+            <a href="tel:01121130014"><i class="fa-solid fa-phone"></i> 01121130014</a>
+        </div>
     </footer>
 
     <!-- Firebase SDKs -->
@@ -449,18 +502,47 @@
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isAdminLoggedIn = false;
 
-        // الصور الـ 10 الأساسية المباشرة
         const defaultPerfumes = [
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/Mxct8rcf/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/LXLdRyV8/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/wZk0wk4G/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/6J12yZC3/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/JRYyFHgC/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/Zz9PKwTQ/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/5gNQy6hF/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/JWjHPZCq/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/DDFf3wks/image.jpg", price: "" },
-            { title: "تشكيلة صفاء الذهب", img: "https://i.ibb.co/j91mXPfp/image.jpg", price: "" }
+            { title: "عطر صفاء الذهب 1", img: "https://ibb.co/0yJQtWR3", price: "" },
+            { title: "عطر صفاء الذهب 2", img: "https://ibb.co/fGk1ypgf", price: "" },
+            { title: "عطر صفاء الذهب 3", img: "https://ibb.co/ddtzCgq", price: "" },
+            { title: "عطر صفاء الذهب 4", img: "https://ibb.co/Ld04KnLR", price: "" },
+            { title: "عطر صفاء الذهب 5", img: "https://ibb.co/DDFTYg5k", price: "" },
+            { title: "عطر صفاء الذهب 6", img: "https://ibb.co/GfSYMPG2", price: "" },
+            { title: "عطر صفاء الذهب 7", img: "https://ibb.co/hR9wmNgN", price: "" },
+            { title: "عطر صفاء الذهب 8", img: "https://ibb.co/4ZQZTHG5", price: "" },
+            { title: "عطر صفاء الذهب 9", img: "https://ibb.co/VpV0QCYt", price: "" },
+            { title: "عطر صفاء الذهب 10", img: "https://ibb.co/BVYWyfRp", price: "" },
+            { title: "عطر صفاء الذهب 11", img: "https://ibb.co/Mxct8rcf", price: "" },
+            { title: "عطر صفاء الذهب 12", img: "https://ibb.co/LXLdRyV8", price: "" },
+            { title: "عطر صفاء الذهب 13", img: "https://ibb.co/wZk0wk4G", price: "" },
+            { title: "عطر صفاء الذهب 14", img: "https://ibb.co/6J12yZC3", price: "" },
+            { title: "عطر صفاء الذهب 15", img: "https://ibb.co/JRYyFHgC", price: "" },
+            { title: "عطر صفاء الذهب 16", img: "https://ibb.co/Zz9PKwTQ", price: "" },
+            { title: "عطر صفاء الذهب 17", img: "https://ibb.co/5gNQy6hF", price: "" },
+            { title: "عطر صفاء الذهب 18", img: "https://ibb.co/JWjHPZCq", price: "" },
+            { title: "عطر صفاء الذهب 19", img: "https://ibb.co/DDFf3wks", price: "" },
+            { title: "عطر صفاء الذهب 20", img: "https://ibb.co/j91mXPfp", price: "" },
+            { title: "عطر صفاء الذهب 21", img: "https://ibb.co/YnXK7MT", price: "" },
+            { title: "عطر صفاء الذهب 22", img: "https://ibb.co/nyhv0yZ", price: "" },
+            { title: "عطر صفاء الذهب 23", img: "https://ibb.co/nqhd1GMK", price: "" },
+            { title: "عطر صفاء الذهب 24", img: "https://ibb.co/dsQ21qrX", price: "" },
+            { title: "عطر صفاء الذهب 25", img: "https://ibb.co/8nD4yhwq", price: "" },
+            { title: "عطر صفاء الذهب 26", img: "https://ibb.co/4gtLvWsR", price: "" },
+            { title: "عطر صفاء الذهب 27", img: "https://ibb.co/gZDyY1vx", price: "" },
+            { title: "عطر صفاء الذهب 28", img: "https://ibb.co/22dnR9s", price: "" },
+            { title: "عطر صفاء الذهب 29", img: "https://ibb.co/353kHpYN", price: "" },
+            { title: "عطر صفاء الذهب 30", img: "https://ibb.co/j9WkWQTH", price: "" },
+            { title: "عطر صفاء الذهب 31", img: "https://ibb.co/m53x1c2j", price: "" },
+            { title: "عطر صفاء الذهب 32", img: "https://ibb.co/yTxcsKw", price: "" },
+            { title: "عطر صفاء الذهب 33", img: "https://ibb.co/ZpG8DGsn", price: "" },
+            { title: "عطر صفاء الذهب 34", img: "https://ibb.co/W4XGSqRx", price: "" },
+            { title: "عطر صفاء الذهب 35", img: "https://ibb.co/84gSsD7C", price: "" },
+            { title: "عطر صفاء الذهب 36", img: "https://ibb.co/chJpLh89", price: "" },
+            { title: "عطر صفاء الذهب 37", img: "https://ibb.co/8nTbKnn9", price: "" },
+            { title: "عطر صفاء الذهب 38", img: "https://ibb.co/prLgdjFr", price: "" },
+            { title: "عطر صفاء الذهب 39", img: "https://ibb.co/hzQPGNW", price: "" },
+            { title: "عطر صفاء الذهب 40", img: "https://ibb.co/G4sCbyW2", price: "" }
         ];
 
         auth.onAuthStateChanged((user) => {
@@ -495,7 +577,6 @@
                     });
                 }
 
-                // دمج الصور الديناميكية المضافة مع التشكيلة الافتراضية
                 const allPerfumes = [...dynamicPerfumes, ...defaultPerfumes];
 
                 allPerfumes.forEach((p) => {
@@ -591,18 +672,18 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            if (email !== ADMIN_EMAIL) {
-                alert("هذا البريد ليس لديه صلاحيات الإشراف!");
-                return;
-            }
-
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
+                .then((userCredential) => {
+                    if (userCredential.user.email !== ADMIN_EMAIL) {
+                        alert("عفواً، هذا الحساب لا يملك صلاحيات الإشراف!");
+                        auth.signOut();
+                        return;
+                    }
                     closeLoginModal();
                     alert("تم تسجيل الدخول بنجاح.");
                 })
                 .catch((error) => {
-                    alert("خطأ في تسجيل الدخول: " + error.message);
+                    alert("خطأ في تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.");
                 });
         }
 
