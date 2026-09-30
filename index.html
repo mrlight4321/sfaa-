@@ -111,7 +111,6 @@
             gap: 10px;
         }
 
-        /* معرض العطور */
         .perfumes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -187,7 +186,6 @@
             background: #dc3545;
         }
 
-        /* التقييمات */
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -238,7 +236,6 @@
             font-size: 18px;
         }
 
-        /* لوحة التحكم ونافذة التسجيل */
         .modal {
             display: none;
             position: fixed;
@@ -351,13 +348,12 @@
 
     <div class="container">
 
-        <!-- لوحة التحكم للآدمن المعتمد -->
+        <!-- لوحة التحكم للمشرف -->
         <div id="admin-panel">
             <div class="admin-header">
                 <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم (المشرف: nooreldeen834@gmail.com)</h2>
             </div>
 
-            <!-- إضافة عطر جديد في قاعدة البيانات -->
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
                 <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد</h3>
                 <div class="form-group">
@@ -376,9 +372,9 @@
             </form>
         </div>
 
-        <!-- معرض العطور الحقيقي من قاعدة البيانات -->
+        <!-- معرض العطور مع الصور الجديدة -->
         <section>
-            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة العطور والمنتجات</h2>
+            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة العطور والمنتجات الفاخرة</h2>
             <div class="perfumes-grid" id="perfumesGrid"></div>
         </section>
 
@@ -408,9 +404,9 @@
     <!-- نافذة تسجيل دخول المشرف -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <div style="display:flex; justify-shadow:space-between; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3 style="color:var(--primary-gold);"><i class="fa-solid fa-lock"></i> تسجيل دخول المشرف</h3>
-                <span onclick="closeLoginModal()" style="color:#fff; cursor:pointer; font-weight:bold;">&times;</span>
+                <span onclick="closeLoginModal()" style="color:#fff; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
             </div>
             <form onsubmit="handleAdminLogin(event)">
                 <div class="form-group">
@@ -453,7 +449,20 @@
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isAdminLoggedIn = false;
 
-        // التحقق من حالة تسجيل الدخول
+        // الصور الـ 10 الأساسية
+        const defaultPerfumes = [
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Mxct8rcf/1.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/LXLdRyV8/2.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/wZk0wk4G/3.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/6J12yZC3/4.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JRYyFHgC/5.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/Zz9PKwTQ/6.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/5gNQy6hF/7.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/JWjHPZCq/8.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/DDFf3wks/9.jpg", price: "" },
+            { title: "عطور صفاء الذهب الملكية", img: "https://i.ibb.co/j91mXPfp/10.jpg", price: "" }
+        ];
+
         auth.onAuthStateChanged((user) => {
             if (user && user.email === ADMIN_EMAIL) {
                 isAdminLoggedIn = true;
@@ -469,22 +478,27 @@
             listenToPerfumes();
         });
 
-        // جلب العطور ديناميكياً من Firebase Realtime Database
         function listenToPerfumes() {
             const grid = document.getElementById('perfumesGrid');
             database.ref('perfumes').on('value', (snapshot) => {
                 grid.innerHTML = '';
                 const data = snapshot.val();
-                if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة بعد.</p>';
-                    return;
+
+                let allPerfumes = [...defaultPerfumes];
+
+                if (data) {
+                    Object.keys(data).forEach((key) => {
+                        allPerfumes.unshift({
+                            id: key,
+                            ...data[key]
+                        });
+                    });
                 }
 
-                Object.keys(data).forEach((key) => {
-                    const p = data[key];
+                allPerfumes.forEach((p) => {
                     grid.innerHTML += `
                         <div class="perfume-card">
-                            ${isAdminLoggedIn ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
+                            ${(isAdminLoggedIn && p.id) ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${p.id}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
                             <div class="perfume-img-box">
                                 <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
                             </div>
@@ -498,7 +512,6 @@
             });
         }
 
-        // إضافة عطر جديد للقاعدة
         function addNewPerfume(e) {
             e.preventDefault();
             if (!isAdminLoggedIn) return;
@@ -517,19 +530,17 @@
                     alert("حدث خطأ أثناء الإضافة.");
                 } else {
                     document.getElementById('addPerfumeForm').reset();
-                    alert("تم إضافة العطر للموقع بنجاح!");
+                    alert("تم إضافة العطر بنجاح!");
                 }
             });
         }
 
-        // حذف عطر من المشرف
         function deletePerfume(key) {
             if (confirm("هل أنت متأكد من حذف هذا العطر؟")) {
                 database.ref('perfumes').child(key).remove();
             }
         }
 
-        // جلب التقييمات
         function listenToReviews() {
             const grid = document.getElementById('reviewsGrid');
             database.ref('reviews').on('value', (snapshot) => {
@@ -569,7 +580,6 @@
             }
         }
 
-        // تسجيل الدخول والخروج
         function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
@@ -586,7 +596,7 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => {
                     closeLoginModal();
-                    alert("تم تسجيل الدخول بنجاح كمشرف.");
+                    alert("تم تسجيل الدخول بنجاح.");
                 })
                 .catch((error) => {
                     alert("خطأ في تسجيل الدخول: " + error.message);
