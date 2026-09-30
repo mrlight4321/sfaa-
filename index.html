@@ -69,46 +69,15 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        .search-container {
-            position: relative;
-            width: 260px;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 10px 20px 10px 45px;
-            background-color: #1a1a1a;
-            border: 2px solid var(--border-color);
-            border-radius: 30px;
-            color: var(--text-white);
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .search-container input:focus {
-            outline: none;
-            border-color: var(--primary-gold);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-        }
-
-        .search-container i {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-gold);
-            font-size: 16px;
-        }
-
-        .btn-reviews-nav {
+        .btn-nav {
             background: transparent;
             border: 2px solid var(--primary-gold);
             color: var(--light-gold);
-            padding: 8px 18px;
+            padding: 8px 16px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 600;
@@ -119,7 +88,7 @@
             gap: 8px;
         }
 
-        .btn-reviews-nav:hover {
+        .btn-nav:hover {
             background: var(--primary-gold);
             color: #000;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
@@ -142,7 +111,7 @@
             gap: 10px;
         }
 
-        /* معرض الكروت */
+        /* معرض العطور */
         .perfumes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -156,6 +125,7 @@
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
         }
 
         .perfume-card:hover {
@@ -175,8 +145,6 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background-color: #050505;
-            image-rendering: -webkit-optimize-contrast;
             transition: transform 0.5s ease;
         }
 
@@ -198,10 +166,28 @@
             color: var(--primary-gold);
             font-weight: bold;
             font-size: 15px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
-        /* قسم التقييمات */
+        .btn-delete-item {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(220, 53, 69, 0.85);
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            display: none;
+        }
+
+        .btn-delete-item:hover {
+            background: #dc3545;
+        }
+
+        /* التقييمات */
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -214,7 +200,6 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
-            position: relative;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
@@ -245,19 +230,35 @@
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 50px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
         .public-review-box h3 {
             color: var(--light-gold);
             margin-bottom: 15px;
             font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* لوحة التحكم */
+        /* لوحة التحكم ونافذة التسجيل */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #141414;
+            border: 2px solid var(--primary-gold);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+        }
+
         #admin-panel {
             display: none;
             background: #111;
@@ -266,45 +267,19 @@
             padding: 30px;
             margin-bottom: 40px;
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
         }
 
-        .admin-header h2 {
-            color: var(--primary-gold);
-            font-size: 22px;
-        }
-
-        .close-admin {
-            background: #331111;
-            color: #ff6b6b;
-            border: 1px solid #ff6b6b;
-            padding: 6px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .close-admin:hover {
-            background: #ff6b6b;
-            color: #fff;
-        }
-
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
@@ -339,6 +314,7 @@
             cursor: pointer;
             transition: 0.3s;
             font-size: 15px;
+            width: 100%;
         }
 
         .btn-gold:hover {
@@ -367,59 +343,48 @@
             </div>
         </div>
         <div class="header-left">
-            <button class="btn-reviews-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="بحث...">
-                <i class="fa-solid fa-search"></i>
-            </div>
+            <button class="btn-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
+            <button class="btn-nav" id="adminLoginBtn" onclick="openLoginModal()"><i class="fa-solid fa-user-lock"></i> دخول المشرف</button>
+            <button class="btn-nav" id="adminLogoutBtn" onclick="logoutAdmin()" style="display:none; border-color:#ff6b6b; color:#ff6b6b;"><i class="fa-solid fa-sign-out-alt"></i> خروج</button>
         </div>
     </header>
 
     <div class="container">
 
-        <!-- لوحة تحكم المشرفين المحدثة -->
+        <!-- لوحة التحكم للآدمن المعتمد -->
         <div id="admin-panel">
             <div class="admin-header">
-                <h2><i class="fa-solid fa-lock"></i> لوحة تحكم المشرفين - صفاء الذهب</h2>
-                <button class="close-admin" onclick="closeAdminPanel()">إغلاق اللوحة</button>
+                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم (المشرف: nooreldeen834@gmail.com)</h2>
             </div>
 
-            <!-- إضافة عطر جديد -->
-            <div style="margin-bottom: 30px; border-bottom: 1px dashed var(--border-color); padding-bottom: 20px;">
-                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد للمعرض</h3>
-                <form id="addPerfumeForm" onsubmit="addNewPerfume(event)">
-                    <div class="form-group">
-                        <label>اسم العطر:</label>
-                        <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر الملكية الفاخر" required>
-                    </div>
-                    <div class="form-group">
-                        <label>رابط صورة العطر (Image URL):</label>
-                        <input type="url" id="adminPerfumeImg" placeholder="https://i.ibb.co/..." required>
-                    </div>
-                    <div class="form-group">
-                        <label>السعر (اختياري):</label>
-                        <input type="text" id="adminPerfumePrice" placeholder="مثال: 450 ج.م">
-                    </div>
-                    <button type="submit" class="btn-gold"><i class="fa-solid fa-upload"></i> إضافة العطر فوراً</button>
-                </form>
-            </div>
-
-            <!-- التحكم في التقييمات -->
-            <div>
-                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-tasks"></i> إدارة البيانات والتقييمات</h3>
-                <button class="btn-gold" style="background: #a82323; color: #fff;" onclick="clearAllReviews()"><i class="fa-solid fa-trash"></i> مسح جميع التقييمات من قاعدة البيانات</button>
-            </div>
+            <!-- إضافة عطر جديد في قاعدة البيانات -->
+            <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
+                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد</h3>
+                <div class="form-group">
+                    <label>اسم العطر:</label>
+                    <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
+                </div>
+                <div class="form-group">
+                    <label>رابط صورة العطر (Image URL):</label>
+                    <input type="url" id="adminPerfumeImg" placeholder="https://i.ibb.co/..." required>
+                </div>
+                <div class="form-group">
+                    <label>السعر:</label>
+                    <input type="text" id="adminPerfumePrice" placeholder="مثال: 450 ج.م">
+                </div>
+                <button type="submit" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
+            </form>
         </div>
 
-        <!-- معرض الكروت وصور العطور الفاخرة -->
+        <!-- معرض العطور الحقيقي من قاعدة البيانات -->
         <section>
-            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة الكروت والعطور الملكية</h2>
+            <h2 class="section-title"><i class="fa-solid fa-gem"></i> تشكيلة العطور والمنتجات</h2>
             <div class="perfumes-grid" id="perfumesGrid"></div>
         </section>
 
-        <!-- قسم آراء وتقييمات العملاء -->
+        <!-- آراء العملاء -->
         <section id="reviewsSection">
-            <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء المميزين</h2>
+            <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء</h2>
             <div class="reviews-grid" id="reviewsGrid"></div>
 
             <div class="public-review-box">
@@ -431,25 +396,46 @@
                     </div>
                     <div class="form-group">
                         <label>الرأي أو التعليق:</label>
-                        <textarea id="publicReviewText" rows="3" placeholder="اكتب رأيك في العطور أو الخدمة..." required></textarea>
+                        <textarea id="publicReviewText" rows="3" placeholder="اكتب رأيك..." required></textarea>
                     </div>
-                    <button type="submit" class="btn-gold"><i class="fa-solid fa-paper-plane"></i> إرسال ونشر التقييم فوراً</button>
+                    <button type="submit" class="btn-gold" style="width: auto;"><i class="fa-solid fa-paper-plane"></i> إرسال التقييم</button>
                 </form>
             </div>
         </section>
 
     </div>
 
+    <!-- نافذة تسجيل دخول المشرف -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div style="display:flex; justify-shadow:space-between; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="color:var(--primary-gold);"><i class="fa-solid fa-lock"></i> تسجيل دخول المشرف</h3>
+                <span onclick="closeLoginModal()" style="color:#fff; cursor:pointer; font-weight:bold;">&times;</span>
+            </div>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label>البريد الإلكتروني:</label>
+                    <input type="email" id="loginEmail" placeholder="nooreldeen834@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور:</label>
+                    <input type="password" id="loginPassword" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn-gold"><i class="fa-solid fa-right-to-bracket"></i> دخول</button>
+            </form>
+        </div>
+    </div>
+
     <footer>
         جميع الحقوق محفوظة &copy; 2026 - براند عطور صفاء الذهب (Safaa El Dahab)
     </footer>
 
-    <!-- مكتبات Firebase -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // إعدادات Firebase الخاص بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyATdsvoL0gsQuqDQwLpA6ENo_bK-GhY3hs",
             authDomain: "safaa-perfumes.firebaseapp.com",
@@ -457,97 +443,108 @@
             projectId: "safaa-perfumes",
             storageBucket: "safaa-perfumes.firebasestorage.app",
             messagingSenderId: "787687900074",
-            appId: "1:787687900074:web:47a587ed116de3624621d3",
-            measurementId: "G-TLDLNHHT89"
+            appId: "1:787687900074:web:47a587ed116de3624621d3"
         };
 
-        // تهيئة الـ Firebase
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const database = firebase.database();
 
-        // قائمة الصور الافتراضية
-        let perfumes = [
-            { img: "https://i.ibb.co/d4Qgg1Rd/1.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/qYqrmTPP/2.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/ksBwN9CT/3.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/3YR6LZKB/4.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/fd5Xfnwx/5.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/5xhHZN0y/6.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/mCF7947B/7.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/35ZzDZ0B/8.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/QhS28Pj/9.jpg", title: "عطور صفاء الذهب الملكية", price: "" },
-            { img: "https://i.ibb.co/39LywzMT/10.jpg", title: "عطور صفاء الذهب الملكية", price: "" }
-        ];
+        const ADMIN_EMAIL = "nooreldeen834@gmail.com";
+        let isAdminLoggedIn = false;
 
-        function scrollToReviews() {
-            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // عرض العطور
-        function renderPerfumes() {
-            const grid = document.getElementById('perfumesGrid');
-            grid.innerHTML = '';
-
-            perfumes.forEach((p) => {
-                grid.innerHTML += `
-                    <div class="perfume-card">
-                        <div class="perfume-img-box">
-                            <img src="${p.img}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
-                        </div>
-                        <div class="perfume-info">
-                            <h3>${p.title}</h3>
-                            ${p.price ? `<p class="perfume-price">${p.price}</p>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // إضافة عطر جديد من اللوحة
-        function addNewPerfume(e) {
-            e.preventDefault();
-            const title = document.getElementById('adminPerfumeTitle').value.trim();
-            const imgUrl = document.getElementById('adminPerfumeImg').value.trim();
-            const price = document.getElementById('adminPerfumePrice').value.trim();
-
-            if (imgUrl) {
-                perfumes.unshift({
-                    img: imgUrl,
-                    title: title || "عطور صفاء الذهب الملكية",
-                    price: price || ""
-                });
-
-                renderPerfumes();
-                document.getElementById('addPerfumeForm').reset();
-                alert('تمت إضافة العطر بنجاح للمعرض!');
+        // التحقق من حالة تسجيل الدخول
+        auth.onAuthStateChanged((user) => {
+            if (user && user.email === ADMIN_EMAIL) {
+                isAdminLoggedIn = true;
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('adminLoginBtn').style.display = 'none';
+                document.getElementById('adminLogoutBtn').style.display = 'flex';
+            } else {
+                isAdminLoggedIn = false;
+                document.getElementById('admin-panel').style.display = 'none';
+                document.getElementById('adminLoginBtn').style.display = 'flex';
+                document.getElementById('adminLogoutBtn').style.display = 'none';
             }
-        }
+            listenToPerfumes();
+        });
 
-        // قراءة التقييمات لحظياً من Firebase
-        function listenToReviews() {
-            const grid = document.getElementById('reviewsGrid');
-            const reviewsRef = database.ref('reviews');
-
-            reviewsRef.on('value', (snapshot) => {
+        // جلب العطور ديناميكياً من Firebase Realtime Database
+        function listenToPerfumes() {
+            const grid = document.getElementById('perfumesGrid');
+            database.ref('perfumes').on('value', (snapshot) => {
                 grid.innerHTML = '';
                 const data = snapshot.val();
-
                 if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column: 1/-1; text-align:center; padding:20px;">لا توجد تقييمات حتى الآن. كن أول من يضيف رأيه!</p>';
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة بعد.</p>';
                     return;
                 }
 
-                const reviewsList = Object.values(data).reverse();
+                Object.keys(data).forEach((key) => {
+                    const p = data[key];
+                    grid.innerHTML += `
+                        <div class="perfume-card">
+                            ${isAdminLoggedIn ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
+                            <div class="perfume-img-box">
+                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.src='https://via.placeholder.com/300x300?text=صفاء+الذهب'">
+                            </div>
+                            <div class="perfume-info">
+                                <h3>${escapeHtml(p.title)}</h3>
+                                ${p.price ? `<p class="perfume-price">${escapeHtml(p.price)}</p>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
 
-                reviewsList.forEach((r) => {
+        // إضافة عطر جديد للقاعدة
+        function addNewPerfume(e) {
+            e.preventDefault();
+            if (!isAdminLoggedIn) return;
+
+            const title = document.getElementById('adminPerfumeTitle').value.trim();
+            const img = document.getElementById('adminPerfumeImg').value.trim();
+            const price = document.getElementById('adminPerfumePrice').value.trim();
+
+            database.ref('perfumes').push({
+                title: title,
+                img: img,
+                price: price,
+                createdAt: Date.now()
+            }, (error) => {
+                if (error) {
+                    alert("حدث خطأ أثناء الإضافة.");
+                } else {
+                    document.getElementById('addPerfumeForm').reset();
+                    alert("تم إضافة العطر للموقع بنجاح!");
+                }
+            });
+        }
+
+        // حذف عطر من المشرف
+        function deletePerfume(key) {
+            if (confirm("هل أنت متأكد من حذف هذا العطر؟")) {
+                database.ref('perfumes').child(key).remove();
+            }
+        }
+
+        // جلب التقييمات
+        function listenToReviews() {
+            const grid = document.getElementById('reviewsGrid');
+            database.ref('reviews').on('value', (snapshot) => {
+                grid.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد تقييمات حتى الآن.</p>';
+                    return;
+                }
+
+                Object.values(data).reverse().forEach((r) => {
                     grid.innerHTML += `
                         <div class="review-card">
                             <div class="review-stars">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                             </div>
                             <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
                             <p>${escapeHtml(r.text)}</p>
@@ -557,60 +554,57 @@
             });
         }
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        // حفظ تقييم جديد
         function savePublicReview(e) {
             e.preventDefault();
-            const nameInput = document.getElementById('publicReviewName');
-            const textInput = document.getElementById('publicReviewText');
-
-            const name = nameInput.value.trim();
-            const text = textInput.value.trim();
+            const name = document.getElementById('publicReviewName').value.trim();
+            const text = document.getElementById('publicReviewText').value.trim();
 
             if (name && text) {
-                const newReviewRef = database.ref('reviews').push();
-                newReviewRef.set({
-                    name: name,
-                    text: text,
-                    timestamp: Date.now()
-                }, (error) => {
-                    if (error) {
-                        alert('حدث خطأ أثناء حفظ التقييم.');
-                    } else {
+                database.ref('reviews').push({ name: name, text: text, timestamp: Date.now() }, (error) => {
+                    if (!error) {
                         document.getElementById('publicReviewForm').reset();
-                        alert('شكراً لك! تم نشر تقييمك فوراً لجميع الزوار.');
+                        alert("تم نشر تقييمك بنجاح!");
                     }
                 });
             }
         }
 
-        // مسح جميع التقييمات من الإدارة
-        function clearAllReviews() {
-            if (confirm("هل أنت متأكد من رغبتك في حذف جميع التقييمات؟")) {
-                database.ref('reviews').remove()
-                    .then(() => alert("تم حذف جميع التقييمات بنجاح."))
-                    .catch((err) => alert("حدث خطأ أثناء الحذف: " + err.message));
+        // تسجيل الدخول والخروج
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (email !== ADMIN_EMAIL) {
+                alert("هذا البريد ليس لديه صلاحيات الإشراف!");
+                return;
             }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    closeLoginModal();
+                    alert("تم تسجيل الدخول بنجاح كمشرف.");
+                })
+                .catch((error) => {
+                    alert("خطأ في تسجيل الدخول: " + error.message);
+                });
         }
 
-        // فتح لوحة التحكم عند كتابة 123456789
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            if (e.target.value.trim() === '123456789') {
-                document.getElementById('admin-panel').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                e.target.value = '';
-            }
-        });
-
-        function closeAdminPanel() {
-            document.getElementById('admin-panel').style.display = 'none';
+        function logoutAdmin() {
+            auth.signOut().then(() => alert("تم تسجيل الخروج."));
         }
 
-        renderPerfumes();
+        function scrollToReviews() {
+            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function escapeHtml(text) {
+            return text ? text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
+        }
+
         listenToReviews();
     </script>
 </body>
