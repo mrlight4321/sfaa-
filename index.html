@@ -409,9 +409,9 @@
                 <p>Safaa El Dahab Perfumes</p>
             </div>
             <div class="header-phones">
-                <a href="tel:01112720021"><i class="fa-solid fa-phone"></i> 01112720021</a>
+                <a href="https://wa.me/201112720021" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01112720021</a>
                 <span style="color:var(--border-color);">|</span>
-                <a href="tel:01121130014"><i class="fa-solid fa-phone"></i> 01121130014</a>
+                <a href="https://wa.me/201121130014" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01121130014</a>
             </div>
         </div>
         <div class="header-left">
@@ -446,7 +446,6 @@
                 <button type="submit" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
 
-            <!-- قسم الحذف السريع من القائمة المنسدلة -->
             <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
                 <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-trash-can"></i> إدارة وحذف العطور</h3>
                 <div class="form-group">
@@ -512,8 +511,8 @@
     <footer>
         <div>جميع الحقوق محفوظة &copy; 2026 - صفاء الذهب (Safaa El Dahab)</div>
         <div class="footer-phones">
-            <a href="tel:01112720021"><i class="fa-solid fa-phone"></i> 01112720021</a>
-            <a href="tel:01121130014"><i class="fa-solid fa-phone"></i> 01121130014</a>
+            <a href="https://wa.me/201112720021" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01112720021</a>
+            <a href="https://wa.me/201121130014" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01121130014</a>
         </div>
     </footer>
 
@@ -573,11 +572,10 @@
                 Object.keys(data).forEach((key) => {
                     const p = data[key];
                     
-                    // كارت العطر مع زر حذف ثابت أسفل الاسم والسعر لو المشرف مسجل دخول
                     grid.innerHTML += `
                         <div class="perfume-card">
                             <div class="perfume-img-box">
-                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=500';">
+                                <img src="${p.img}" alt="${escapeHtml(p.title)}" style="background:#111;">
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
@@ -587,7 +585,6 @@
                         </div>
                     `;
 
-                    // تعبئة القائمة المنسدلة في لوحة التحكم
                     if(selectBox && isAdminLoggedIn) {
                         selectBox.innerHTML += `<option value="${key}">${escapeHtml(p.title)}</option>`;
                     }
