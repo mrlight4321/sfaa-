@@ -502,49 +502,6 @@
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isAdminLoggedIn = false;
 
-        const defaultPerfumes = [
-            { title: "عطر صفاء الذهب 1", img: "https://ibb.co/0yJQtWR3", price: "" },
-            { title: "عطر صفاء الذهب 2", img: "https://ibb.co/fGk1ypgf", price: "" },
-            { title: "عطر صفاء الذهب 3", img: "https://ibb.co/ddtzCgq", price: "" },
-            { title: "عطر صفاء الذهب 4", img: "https://ibb.co/Ld04KnLR", price: "" },
-            { title: "عطر صفاء الذهب 5", img: "https://ibb.co/DDFTYg5k", price: "" },
-            { title: "عطر صفاء الذهب 6", img: "https://ibb.co/GfSYMPG2", price: "" },
-            { title: "عطر صفاء الذهب 7", img: "https://ibb.co/hR9wmNgN", price: "" },
-            { title: "عطر صفاء الذهب 8", img: "https://ibb.co/4ZQZTHG5", price: "" },
-            { title: "عطر صفاء الذهب 9", img: "https://ibb.co/VpV0QCYt", price: "" },
-            { title: "عطر صفاء الذهب 10", img: "https://ibb.co/BVYWyfRp", price: "" },
-            { title: "عطر صفاء الذهب 11", img: "https://ibb.co/Mxct8rcf", price: "" },
-            { title: "عطر صفاء الذهب 12", img: "https://ibb.co/LXLdRyV8", price: "" },
-            { title: "عطر صفاء الذهب 13", img: "https://ibb.co/wZk0wk4G", price: "" },
-            { title: "عطر صفاء الذهب 14", img: "https://ibb.co/6J12yZC3", price: "" },
-            { title: "عطر صفاء الذهب 15", img: "https://ibb.co/JRYyFHgC", price: "" },
-            { title: "عطر صفاء الذهب 16", img: "https://ibb.co/Zz9PKwTQ", price: "" },
-            { title: "عطر صفاء الذهب 17", img: "https://ibb.co/5gNQy6hF", price: "" },
-            { title: "عطر صفاء الذهب 18", img: "https://ibb.co/JWjHPZCq", price: "" },
-            { title: "عطر صفاء الذهب 19", img: "https://ibb.co/DDFf3wks", price: "" },
-            { title: "عطر صفاء الذهب 20", img: "https://ibb.co/j91mXPfp", price: "" },
-            { title: "عطر صفاء الذهب 21", img: "https://ibb.co/YnXK7MT", price: "" },
-            { title: "عطر صفاء الذهب 22", img: "https://ibb.co/nyhv0yZ", price: "" },
-            { title: "عطر صفاء الذهب 23", img: "https://ibb.co/nqhd1GMK", price: "" },
-            { title: "عطر صفاء الذهب 24", img: "https://ibb.co/dsQ21qrX", price: "" },
-            { title: "عطر صفاء الذهب 25", img: "https://ibb.co/8nD4yhwq", price: "" },
-            { title: "عطر صفاء الذهب 26", img: "https://ibb.co/4gtLvWsR", price: "" },
-            { title: "عطر صفاء الذهب 27", img: "https://ibb.co/gZDyY1vx", price: "" },
-            { title: "عطر صفاء الذهب 28", img: "https://ibb.co/22dnR9s", price: "" },
-            { title: "عطر صفاء الذهب 29", img: "https://ibb.co/353kHpYN", price: "" },
-            { title: "عطر صفاء الذهب 30", img: "https://ibb.co/j9WkWQTH", price: "" },
-            { title: "عطر صفاء الذهب 31", img: "https://ibb.co/m53x1c2j", price: "" },
-            { title: "عطر صفاء الذهب 32", img: "https://ibb.co/yTxcsKw", price: "" },
-            { title: "عطر صفاء الذهب 33", img: "https://ibb.co/ZpG8DGsn", price: "" },
-            { title: "عطر صفاء الذهب 34", img: "https://ibb.co/W4XGSqRx", price: "" },
-            { title: "عطر صفاء الذهب 35", img: "https://ibb.co/84gSsD7C", price: "" },
-            { title: "عطر صفاء الذهب 36", img: "https://ibb.co/chJpLh89", price: "" },
-            { title: "عطر صفاء الذهب 37", img: "https://ibb.co/8nTbKnn9", price: "" },
-            { title: "عطر صفاء الذهب 38", img: "https://ibb.co/prLgdjFr", price: "" },
-            { title: "عطر صفاء الذهب 39", img: "https://ibb.co/hzQPGNW", price: "" },
-            { title: "عطر صفاء الذهب 40", img: "https://ibb.co/G4sCbyW2", price: "" }
-        ];
-
         auth.onAuthStateChanged((user) => {
             if (user && user.email === ADMIN_EMAIL) {
                 isAdminLoggedIn = true;
@@ -566,23 +523,16 @@
                 grid.innerHTML = '';
                 const data = snapshot.val();
 
-                let dynamicPerfumes = [];
-
-                if (data) {
-                    Object.keys(data).forEach((key) => {
-                        dynamicPerfumes.push({
-                            id: key,
-                            ...data[key]
-                        });
-                    });
+                if (!data) {
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة حالياً. قم بتسجيل الدخول كمسؤول لإضافة العطور.</p>';
+                    return;
                 }
 
-                const allPerfumes = [...dynamicPerfumes, ...defaultPerfumes];
-
-                allPerfumes.forEach((p) => {
+                Object.keys(data).forEach((key) => {
+                    const p = data[key];
                     grid.innerHTML += `
                         <div class="perfume-card">
-                            ${(isAdminLoggedIn && p.id) ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${p.id}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
+                            ${isAdminLoggedIn ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
                             <div class="perfume-img-box">
                                 <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=500';">
                             </div>
