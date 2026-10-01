@@ -151,7 +151,6 @@
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
         }
 
         .perfume-card:hover {
@@ -195,22 +194,27 @@
             margin-top: 6px;
         }
 
-        .btn-delete-item {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(220, 53, 69, 0.85);
-            color: #fff;
-            border: none;
-            padding: 6px 10px;
+        .card-delete-btn {
+            width: calc(100% - 30px);
+            margin: 0 15px 15px 15px;
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+            color: #ff6b6b;
+            padding: 8px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
-            display: none;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.3s;
         }
 
-        .btn-delete-item:hover {
+        .card-delete-btn:hover {
             background: #dc3545;
+            color: #fff;
         }
 
         .reviews-grid {
@@ -313,7 +317,7 @@
             font-weight: 600;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px;
             background: #1a1a1a;
@@ -323,7 +327,7 @@
             font-size: 14px;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary-gold);
         }
@@ -350,13 +354,12 @@
             background: linear-gradient(135deg, #dc3545, #a71d2a);
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
             font-size: 14px;
-            margin-top: 10px;
             width: 100%;
             display: flex;
             align-items: center;
@@ -443,16 +446,16 @@
                 <button type="submit" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
 
-            <!-- قسم إدارة وحذف العطور المضافة -->
+            <!-- قسم الحذف السريع من القائمة المنسدلة -->
             <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
                 <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-trash-can"></i> إدارة وحذف العطور</h3>
                 <div class="form-group">
                     <label>اختر العطر للحذف:</label>
-                    <select id="deletePerfumeSelect" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-size: 14px;">
+                    <select id="deletePerfumeSelect">
                         <option value="">-- اختر عطراً للحذف --</option>
                     </select>
                 </div>
-                <button type="button" class="btn-danger" onclick="confirmAndDeletePerfume()"><i class="fa-solid fa-triangle-exclamation"></i> حذف العطر المحدد مع الصورة</button>
+                <button type="button" class="btn-danger" onclick="confirmAndDeletePerfume()"><i class="fa-solid fa-triangle-exclamation"></i> حذف العطر المحدد نهائياً</button>
             </div>
         </div>
 
@@ -570,10 +573,9 @@
                 Object.keys(data).forEach((key) => {
                     const p = data[key];
                     
-                    // إضافة العطر لعرض الشبكة
+                    // كارت العطر مع زر حذف ثابت أسفل الاسم والسعر لو المشرف مسجل دخول
                     grid.innerHTML += `
                         <div class="perfume-card">
-                            ${isAdminLoggedIn ? `<button class="btn-delete-item" style="display:block;" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash"></i> حذف</button>` : ''}
                             <div class="perfume-img-box">
                                 <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=500';">
                             </div>
@@ -581,10 +583,11 @@
                                 <h3>${escapeHtml(p.title)}</h3>
                                 ${p.price ? `<p class="perfume-price">${escapeHtml(p.price)}</p>` : ''}
                             </div>
+                            ${isAdminLoggedIn ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
                         </div>
                     `;
 
-                    // تعبئة قائمة الحذف المنسدلة في لوحة التحكم للمشرف
+                    // تعبئة القائمة المنسدلة في لوحة التحكم
                     if(selectBox && isAdminLoggedIn) {
                         selectBox.innerHTML += `<option value="${key}">${escapeHtml(p.title)}</option>`;
                     }
@@ -616,8 +619,10 @@
         }
 
         function deletePerfume(key) {
-            if (confirm("هل أنت متأكد من حذف هذا العطر وصورته نهائياً؟")) {
-                database.ref('perfumes').child(key).remove();
+            if (confirm("⚠️ تحذير: هل أنت متأكد من حذف هذا العطر وصورته نهائياً؟")) {
+                database.ref('perfumes').child(key).remove().then(() => {
+                    alert("تم الحذف بنجاح.");
+                });
             }
         }
 
@@ -630,13 +635,9 @@
                 return;
             }
 
-            // رسالة تأكيد صارمة لمنع أي كارثة أو حذف بالخطأ
-            const confirmation = confirm("⚠️ تحذير: أنت على وشك حذف هذا العطر وصورته نهائياً من الموقع. هل تريد المتابعة بالتأكيد؟");
-            if (confirmation) {
+            if (confirm("⚠️ تحذير صارم: أنت على وشك حذف هذا العطر من لوحة التحكم. هل تريد المتابعة؟")) {
                 database.ref('perfumes').child(selectedKey).remove().then(() => {
-                    alert("تم حذف العطر وصورته بنجاح.");
-                }).catch((error) => {
-                    alert("حدث خطأ أثناء الحذف.");
+                    alert("تم حذف العطر بنجاح.");
                 });
             }
         }
@@ -667,11 +668,11 @@
 
         function savePublicReview(e) {
             e.preventDefault();
-            Name = document.getElementById('publicReviewName').value.trim();
+            const name = document.getElementById('publicReviewName').value.trim();
             const text = document.getElementById('publicReviewText').value.trim();
 
-            if (Name && text) {
-                database.ref('reviews').push({ name: Name, text: text, timestamp: Date.now() }, (error) => {
+            if (name && text) {
+                database.ref('reviews').push({ name: name, text: text, timestamp: Date.now() }, (error) => {
                     if (!error) {
                         document.getElementById('publicReviewForm').reset();
                         alert("تم نشر تقييمك بنجاح!");
