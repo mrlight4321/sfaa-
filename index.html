@@ -437,8 +437,8 @@
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
                 <div class="form-group">
-                    <label>رابط صورة العطر (URL):</label>
-                    <input type="url" id="adminPerfumeImg" placeholder="https://..." oninput="previewImage(this.value)" required>
+                    <label>رابط الصورة المباشر (Direct Image URL):</label>
+                    <input type="url" id="adminPerfumeImg" placeholder="https://... (تأكد أنه ينتهي بـ .jpg أو .png)" oninput="previewImage(this.value)" required>
                 </div>
                 
                 <!-- معاينة الصورة قبل النشر -->
@@ -449,7 +449,7 @@
 
                 <div class="form-group">
                     <label>السعر:</label>
-                    <input type="text" id="adminPerfumePrice" placeholder="مثال: 450 ج.م">
+                    <input type="text" id="adminPerfumePrice" placeholder="مثال: 2700 ج.م">
                 </div>
                 <button type="submit" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
@@ -595,6 +595,7 @@
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
                                 ${p.price ? `<p class="perfume-price">${escapeHtml(p.price)}</p>` : ''}
+                                <p style="font-size:10px; color:#aaa; word-break:break-all; margin-top:8px;" title="الرابط المخزن">🔗 رابط: ${escapeHtml(p.img)}</p>
                             </div>
                             ${isAdminLoggedIn ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
                         </div>
@@ -633,13 +634,13 @@
                 } else {
                     document.getElementById('addPerfumeForm').reset();
                     document.getElementById('imagePreviewContainer').style.display = 'none';
-                    alert("تم إضافة العطر وصورته بنجاح للزوار!");
+                    alert("تم إضافة العطر بنجاح!");
                 }
             });
         }
 
         function deletePerfume(key) {
-            if (confirm("⚠️ تحذير: هل أنت متأكد من حذف هذا العطر وصورته نهائياً؟")) {
+            if (confirm("⚠️ تحذير: هل أنت متأكد من حذف هذا العطر نهائياً؟")) {
                 database.ref('perfumes').child(key).remove().then(() => {
                     alert("تم الحذف بنجاح.");
                 });
@@ -654,7 +655,7 @@
                 alert("الرجاء اختيار عطر من القائمة أولاً لحذفه.");
             } else if (confirm("⚠️ تحذير صارم: أنت على وشك حذف هذا العطر نهائياً. هل تريد المتابعة؟")) {
                 database.ref('perfumes').child(selectedKey).remove().then(() => {
-                    alert("تم حذف العطر بنجاح.");
+                    alert("تم حذف العطر نهائياً.");
                 });
             }
         }
@@ -703,7 +704,7 @@
 
         function handleAdminLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
+            const email = document.getElementById('loginEmail.value') ? document.getElementById('loginEmail').value.trim() : document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
             auth.signInWithEmailAndPassword(email, password)
@@ -726,7 +727,7 @@
         }
 
         function scrollToReviews() {
-            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('reviewsSection').scrollOnView ? document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' }) : document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         function escapeHtml(text) {
