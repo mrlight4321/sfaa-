@@ -164,6 +164,7 @@
             height: 280px;
             background-color: #050505;
             overflow: hidden;
+            position: relative;
         }
 
         .perfume-img-box img {
@@ -437,8 +438,15 @@
                 </div>
                 <div class="form-group">
                     <label>رابط صورة العطر (URL):</label>
-                    <input type="url" id="adminPerfumeImg" placeholder="https://..." required>
+                    <input type="url" id="adminPerfumeImg" placeholder="https://..." oninput="previewImage(this.value)" required>
                 </div>
+                
+                <!-- معاينة الصورة قبل النشر -->
+                <div id="imagePreviewContainer" class="form-group" style="display:none; text-align:center;">
+                    <label>معاينة الصورة:</label>
+                    <img id="imgPreview" src="" alt="معاينة" style="max-height: 120px; border-radius: 8px; border: 1px solid var(--primary-gold);">
+                </div>
+
                 <div class="form-group">
                     <label>السعر:</label>
                     <input type="text" id="adminPerfumePrice" placeholder="مثال: 450 ج.م">
@@ -572,10 +580,10 @@
                 Object.keys(data).forEach((key) => {
                     const p = data[key];
                     
-                    grid.innerHTML += `
+                    grid.innerHTML = `
                         <div class="perfume-card">
                             <div class="perfume-img-box">
-                                <img src="${p.img}" alt="${escapeHtml(p.title)}" style="background:#111;">
+                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.src='https://via.placeholder.com/300x350/111111/d4af37?text=Safaa+El+Dahab'" style="background:#111;">
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
@@ -583,13 +591,20 @@
                             </div>
                             ${isAdminLoggedIn ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
                         </div>
-                    `;
-
-                    if(selectBox && isAdminLoggedIn) {
-                        selectBox.innerHTML += `<option value="${key}">${escapeHtml(p.title)}</option>`;
-                    }
+                    ` + grid.innerHTML; // أضيفت هكذا لتعرض الأحدث في الأعلى
                 });
             });
+        }
+
+        function previewImage(url) {
+            const container = document.getElementById('imagePreviewContainer');
+            const preview = document.getElementById('imgPreview');
+            if (url.trim() !== '') {
+                preview.src = url;
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
         }
 
         function addNewPerfume(e) {
@@ -610,6 +625,7 @@
                     alert("حدث خطأ أثناء الإضافة.");
                 } else {
                     document.getElementById('addPerfumeForm').reset();
+                    document.getElementById('imagePreviewContainer').style.display = 'none';
                     alert("تم إضافة العطر وصورته بنجاح!");
                 }
             });
@@ -665,7 +681,7 @@
 
         function savePublicReview(e) {
             e.preventDefault();
-            const name = document.getElementById('publicReviewName').value.trim();
+            const name = document.getElementById('publicReviewName').value.TexT ? document.getElementById('publicReviewName').value.trim() : document.getElementById('publicReviewName').value.trim();
             const text = document.getElementById('publicReviewText').value.trim();
 
             if (name && text) {
@@ -688,7 +704,7 @@
 
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    if (userCredential.user.email !== ADMIN_EMAIL) {
+                    if (user_mail_check = userCredential.user.email !== ADMIN_EMAIL) {
                         alert("عفواً، هذا الحساب لا يملك صلاحيات الإشراف!");
                         auth.signOut();
                         return;
