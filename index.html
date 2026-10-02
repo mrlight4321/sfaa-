@@ -121,6 +121,19 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
+        .user-greeting {
+            color: var(--light-gold);
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
         .container {
             max-width: 1300px;
             margin: 30px auto;
@@ -307,6 +320,33 @@
             padding-bottom: 15px;
         }
 
+        .clients-table-container {
+            margin-top: 25px;
+            overflow-x: auto;
+        }
+
+        .clients-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 13px;
+        }
+
+        .clients-table th, .clients-table td {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .clients-table th {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--light-gold);
+        }
+
+        .clients-table td {
+            background: #161616;
+            color: var(--text-white);
+        }
+
         .form-group {
             margin-bottom: 18px;
         }
@@ -373,6 +413,23 @@
             box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
         }
 
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .auth-switch span {
+            color: var(--primary-gold);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .auth-switch span:hover {
+            text-decoration: underline;
+        }
+
         footer {
             text-align: center;
             padding: 30px 20px;
@@ -436,9 +493,12 @@
             </div>
         </div>
         <div class="header-left">
+            <div class="user-greeting" id="userGreetingArea">
+                <i class="fa-solid fa-user-check" style="color:var(--primary-gold);"></i> <span id="currentUserEmailText"></span>
+            </div>
             <button class="btn-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
-            <button class="btn-nav" id="adminLoginBtn" onclick="openLoginModal()"><i class="fa-solid fa-user-lock"></i> دخول المشرف</button>
-            <button class="btn-nav" id="adminLogoutBtn" onclick="logoutAdmin()" style="display:none; border-color:#ff6b6b; color:#ff6b6b;"><i class="fa-solid fa-sign-out-alt"></i> خروج</button>
+            <button class="btn-nav" id="authBtn" onclick="openAuthModal()"><i class="fa-solid fa-user"></i> دخول / تسجيل</button>
+            <button class="btn-nav" id="logoutBtn" onclick="logoutUser()" style="display:none; border-color:#ff6b6b; color:#ff6b6b;"><i class="fa-solid fa-sign-out-alt"></i> خروج</button>
         </div>
     </header>
 
@@ -447,7 +507,7 @@
         <!-- لوحة التحكم للمشرف -->
         <div id="admin-panel">
             <div class="admin-header">
-                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم</h2>
+                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم والإدارة</h2>
             </div>
 
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
@@ -458,7 +518,6 @@
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
 
-                <!-- خانة إدخال رابط الصورة فقط -->
                 <div class="form-group">
                     <label>رابط الصورة (URL):</label>
                     <input type="url" id="adminPerfumeImgUrl" placeholder="https://example.com/image.jpg" required>
@@ -472,7 +531,7 @@
                 <button type="submit" id="submitBtn" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
 
-            <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <div style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-bottom: 25px;">
                 <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-trash-can"></i> إدارة وحذف العطور</h3>
                 <div class="form-group">
                     <label>اختر العطر للحذف:</label>
@@ -481,6 +540,24 @@
                     </select>
                 </div>
                 <button type="button" class="btn-danger" onclick="confirmAndDeletePerfume()"><i class="fa-solid fa-triangle-exclamation"></i> حذف العطر المحدد نهائياً</button>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-users"></i> قائمة العملاء المسجلين في الموقع</h3>
+                <div class="clients-table-container">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>البريد الإلكتروني للعميل</th>
+                                <th>تاريخ الانضمام</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientsTableBody">
+                            <tr><td colspan="3" style="text-align: center; color: var(--text-gray);">جاري تحميل العملاء...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -513,24 +590,29 @@
 
     </div>
 
-    <!-- نافذة تسجيل دخول المشرف -->
-    <div class="modal" id="loginModal">
+    <!-- نافذة تسجيل الدخول / إنشاء حساب للعملاء والمشرف -->
+    <div class="modal" id="authModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h3 style="color:var(--primary-gold);"><i class="fa-solid fa-lock"></i> تسجيل دخول المشرف</h3>
-                <span onclick="closeLoginModal()" style="color:#fff; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
+                <h3 style="color:var(--primary-gold);" id="authModalTitle"><i class="fa-solid fa-lock"></i> تسجيل الدخول</h3>
+                <span onclick="closeAuthModal()" style="color:#fff; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
             </div>
-            <form onsubmit="handleAdminLogin(event)">
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
                 <div class="form-group">
-                    <label>أدخل إيميل المشرف:</label>
-                    <input type="email" id="loginEmail" placeholder="أدخل إيميل المشرف..." required>
+                    <label>البريد الإلكتروني:</label>
+                    <input type="email" id="authEmail" placeholder="أدخل بريدك الإلكتروني..." required>
                 </div>
                 <div class="form-group">
                     <label>كلمة المرور:</label>
-                    <input type="password" id="loginPassword" placeholder="******" required>
+                    <input type="password" id="authPassword" placeholder="******" required>
                 </div>
-                <button type="submit" class="btn-gold"><i class="fa-solid fa-right-to-bracket"></i> دخول</button>
+                <button type="submit" class="btn-gold" id="authSubmitBtn"><i class="fa-solid fa-right-to-bracket"></i> دخول</button>
             </form>
+
+            <div class="auth-switch" id="authSwitchText">
+                ليس لديك حساب؟ <span onclick="toggleAuthMode()">إنشاء حساب جديد</span>
+            </div>
         </div>
     </div>
 
@@ -545,7 +627,7 @@
         </div>
     </footer>
 
-    <!-- Firebase SDKs (Realtime Database & Auth) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -566,26 +648,118 @@
         const database = firebase.database();
 
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
-        let isAdminLoggedIn = false;
+        let isSignUpMode = false;
+        let currentLoggedInUser = null;
 
         auth.onAuthStateChanged((user) => {
-            if (user && user.email === ADMIN_EMAIL) {
-                isAdminLoggedIn = true;
-                document.getElementById('admin-panel').style.display = 'block';
-                document.getElementById('adminLoginBtn').style.display = 'none';
-                document.getElementById('adminLogoutBtn').style.display = 'flex';
+            currentLoggedInUser = user;
+            const greetingArea = document.getElementById('userGreetingArea');
+            const emailText = document.getElementById('currentUserEmailText');
+            const authBtn = document.getElementById('authBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminPanel = document.getElementById('admin-panel');
+
+            if (user) {
+                greetingArea.style.display = 'flex';
+                emailText.textContent = user.email;
+                authBtn.style.display = 'none';
+                logoutBtn.style.display = 'flex';
+
+                if (user.email === ADMIN_EMAIL) {
+                    adminPanel.style.display = 'block';
+                    loadRegisteredClients();
+                } else {
+                    adminPanel.style.display = 'none';
+                }
             } else {
-                isAdminLoggedIn = false;
-                document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('adminLoginBtn').style.display = 'flex';
-                document.getElementById('adminLogoutBtn').style.display = 'none';
+                greetingArea.style.display = 'none';
+                authBtn.style.display = 'flex';
+                logoutBtn.style.display = 'none';
+                adminPanel.style.display = 'none';
             }
             listenToPerfumes();
         });
 
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            const title = document.getElementById('authModalTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const switchText = document.getElementById('authSwitchText');
+
+            if (isSignUpMode) {
+                title.innerHTML = '<i class="fa-solid fa-user-plus"></i> إنشاء حساب جديد';
+                submitBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> تسجيل وحفظ الحساب';
+                switchText.innerHTML = 'لديك حساب بالفعل؟ <span onclick="toggleAuthMode()">تسجيل الدخول</span>';
+            } else {
+                title.innerHTML = '<i class="fa-solid fa-lock"></i> تسجيل الدخول';
+                submitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول';
+                switchText.innerHTML = 'ليس لديك حساب؟ <span onclick="toggleAuthMode()">إنشاء حساب جديد</span>';
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+
+            if (isSignUpMode) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // حفظ بيانات العميل في قاعدة البيانات لكي تظهر في لوحة التحكم
+                        const userId = userCredential.user.uid;
+                        database.ref('clients/' + userId).set({
+                            email: email,
+                            joinedAt: new Date().toLocaleString('ar-EG')
+                        });
+                        closeAuthModal();
+                        alert("تم إنشاء الحساب وتسجيل الدخول بنجاح!");
+                    })
+                    .catch((error) => {
+                        alert("خطأ في إنشاء الحساب: " + error.message);
+                    });
+            } else {
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(() => {
+                        closeAuthModal();
+                        alert("تم تسجيل الدخول بنجاح.");
+                    })
+                    .catch((error) => {
+                        alert("خطأ في تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.");
+                    });
+            }
+        }
+
+        function logoutUser() {
+            auth.signOut().then(() => alert("تم تسجيل الخروج بنجاح."));
+        }
+
+        function loadRegisteredClients() {
+            const tableBody = document.getElementById('clientsTableBody');
+            database.ref('clients').on('value', (snapshot) => {
+                tableBody.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">لا يوجد عملاء مسجلين حتى الآن.</td></tr>';
+                    return;
+                }
+
+                let index = 1;
+                Object.values(data).forEach((client) => {
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${index++}</td>
+                            <td>${escapeHtml(client.email)}</td>
+                            <td>${escapeHtml(client.joinedAt || 'غير متوفر')}</td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
         function listenToPerfumes() {
             const grid = document.getElementById('perfumesGrid');
             const selectBox = document.getElementById('deletePerfumeSelect');
+            const isAdmin = currentLoggedInUser && currentLoggedInUser.email === ADMIN_EMAIL;
             
             database.ref('perfumes').on('value', (snapshot) => {
                 grid.innerHTML = '';
@@ -617,7 +791,7 @@
                                 <h3>${escapeHtml(p.title)}</h3>
                                 ${p.price ? `<p class="perfume-price">${escapeHtml(p.price)}</p>` : ''}
                             </div>
-                            ${isAdminLoggedIn ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
+                            ${isAdmin ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
                         </div>
                     `;
                 });
@@ -626,7 +800,7 @@
 
         function addNewPerfume(e) {
             e.preventDefault();
-            if (!isAdminLoggedIn) return;
+            if (!currentLoggedInUser || currentLoggedInUser.email !== ADMIN_EMAIL) return;
 
             const title = document.getElementById('adminPerfumeTitle').value.trim();
             const price = document.getElementById('adminPerfumePrice').value.trim();
@@ -718,32 +892,8 @@
             }
         }
 
-        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
-        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    if (userCredential.user.email !== ADMIN_EMAIL) {
-                        alert("عفواً، هذا الحساب لا يملك صلاحيات الإشراف!");
-                        auth.signOut();
-                        return;
-                    }
-                    closeLoginModal();
-                    alert("تم تسجيل الدخول بنجاح.");
-                })
-                .catch((error) => {
-                    alert("خطأ في تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.");
-                });
-        }
-
-        function logoutAdmin() {
-            auth.signOut().then(() => alert("تم تسجيل الخروج."));
-        }
+        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
 
         function scrollToReviews() {
             document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
