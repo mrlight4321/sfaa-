@@ -432,7 +432,7 @@
         <!-- لوحة التحكم للمشرف -->
         <div id="admin-panel">
             <div class="admin-header">
-                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم (بدون بطاقة بنكية)</h2>
+                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم</h2>
             </div>
 
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
@@ -621,12 +621,10 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري معالجة ونشر العطر...';
 
-            // قراءة الصورة وتحويلها إلى Base64 داخل المتصفح
             const reader = new FileReader();
             reader.onload = function(uploadEvent) {
                 const base64Image = uploadEvent.target.result;
 
-                // حفظ البيانات مباشرة في Realtime Database
                 database.ref('perfumes').push({
                     title: title,
                     img: base64Image,
