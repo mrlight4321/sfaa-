@@ -328,6 +328,11 @@
             font-size: 14px;
         }
 
+        .form-group input[type="file"] {
+            padding: 8px;
+            cursor: pointer;
+        }
+
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary-gold);
@@ -427,31 +432,26 @@
         <!-- لوحة التحكم للمشرف -->
         <div id="admin-panel">
             <div class="admin-header">
-                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم</h2>
+                <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم (بدون بطاقة بنكية)</h2>
             </div>
 
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
-                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد</h3>
+                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد واختيار الصورة مباشرة</h3>
                 <div class="form-group">
                     <label>اسم العطر:</label>
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
-                <div class="form-group">
-                    <label>رابط الصورة المباشر (Direct Image URL):</label>
-                    <input type="url" id="adminPerfumeImg" placeholder="https://... (تأكد أنه ينتهي بـ .jpg أو .png)" oninput="previewImage(this.value)" required>
-                </div>
                 
-                <!-- معاينة الصورة قبل النشر -->
-                <div id="imagePreviewContainer" class="form-group" style="display:none; text-align:center;">
-                    <label>معاينة الصورة:</label>
-                    <img id="imgPreview" src="" alt="معاينة" style="max-height: 120px; border-radius: 8px; border: 1px solid var(--primary-gold);">
+                <div class="form-group">
+                    <label>اختر صورة العطر من جهازك أو هاتفك:</label>
+                    <input type="file" id="adminPerfumeImgFile" accept="image/*" required>
                 </div>
 
                 <div class="form-group">
                     <label>السعر:</label>
                     <input type="text" id="adminPerfumePrice" placeholder="مثال: 2700 ج.م">
                 </div>
-                <button type="submit" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
+                <button type="submit" id="submitBtn" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
 
             <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
@@ -524,7 +524,7 @@
         </div>
     </footer>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Realtime Database & Auth) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -535,7 +535,7 @@
             authDomain: "safaa-perfumes.firebaseapp.com",
             databaseURL: "https://safaa-perfumes-default-rtdb.firebaseio.com",
             projectId: "safaa-perfumes",
-            storageBucket: "safaa-perfumes.firebasestorage.app",
+            storageBucket: "safaa-perfumes.appspot.com",
             messagingSenderId: "787687900074",
             appId: "1:787687900074:web:47a587ed116de3624621d3"
         };
@@ -595,7 +595,6 @@
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
                                 ${p.price ? `<p class="perfume-price">${escapeHtml(p.price)}</p>` : ''}
-                                <p style="font-size:10px; color:#aaa; word-break:break-all; margin-top:8px;" title="الرابط المخزن">🔗 رابط: ${escapeHtml(p.img)}</p>
                             </div>
                             ${isAdminLoggedIn ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
                         </div>
@@ -604,39 +603,54 @@
             });
         }
 
-        function previewImage(url) {
-            const container = document.getElementById('imagePreviewContainer');
-            const preview = document.getElementById('imgPreview');
-            if (url.trim() !== '') {
-                preview.src = url;
-                container.style.display = 'block';
-            } else {
-                container.style.display = 'none';
-            }
-        }
-
         function addNewPerfume(e) {
             e.preventDefault();
             if (!isAdminLoggedIn) return;
 
             const title = document.getElementById('adminPerfumeTitle').value.trim();
-            const img = document.getElementById('adminPerfumeImg').value.trim();
             const price = document.getElementById('adminPerfumePrice').value.trim();
+            const fileInput = document.getElementById('adminPerfumeImgFile');
+            const file = fileInput.files[0];
 
-            database.ref('perfumes').push({
-                title: title,
-                img: img,
-                price: price,
-                createdAt: Date.now()
-            }, (error) => {
-                if (error) {
-                    alert("حدث خطأ أثناء الإضافة.");
-                } else {
-                    document.getElementById('addPerfumeForm').reset();
-                    document.getElementById('imagePreviewContainer').style.display = 'none';
-                    alert("تم إضافة العطر بنجاح!");
-                }
-            });
+            if (!file) {
+                alert("الرجاء اختيار صورة العطر.");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري معالجة ونشر العطر...';
+
+            // قراءة الصورة وتحويلها إلى Base64 داخل المتصفح
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                const base64Image = uploadEvent.target.result;
+
+                // حفظ البيانات مباشرة في Realtime Database
+                database.ref('perfumes').push({
+                    title: title,
+                    img: base64Image,
+                    price: price,
+                    createdAt: Date.now()
+                }, (error) => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً';
+                    if (error) {
+                        alert("حدث خطأ أثناء حفظ العطر: " + error.message);
+                    } else {
+                        document.getElementById('addPerfumeForm').reset();
+                        alert("تم إضافة ونشر العطر بنجاح!");
+                    }
+                });
+            };
+
+            reader.onerror = function(error) {
+                alert("حدث خطأ أثناء قراءة الملف.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً';
+            };
+
+            reader.readAsDataURL(file);
         }
 
         function deletePerfume(key) {
@@ -704,7 +718,7 @@
 
         function handleAdminLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail.value') ? document.getElementById('loginEmail').value.trim() : document.getElementById('loginEmail').value.trim();
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
             auth.signInWithEmailAndPassword(email, password)
@@ -727,7 +741,7 @@
         }
 
         function scrollToReviews() {
-            document.getElementById('reviewsSection').scrollOnView ? document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' }) : document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         function escapeHtml(text) {
