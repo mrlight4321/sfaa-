@@ -647,6 +647,9 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
+        // تثبيت جلسة تسجيل الدخول للمشرف ولكل العملاء الجدد دائمًا
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isSignUpMode = false;
         let currentLoggedInUser = null;
@@ -705,7 +708,6 @@
             if (isSignUpMode) {
                 auth.createUserWithEmailAndPassword(email, password)
                     .then((userCredential) => {
-                        // حفظ بيانات العميل في قاعدة البيانات لكي تظهر في لوحة التحكم
                         const userId = userCredential.user.uid;
                         database.ref('clients/' + userId).set({
                             email: email,
