@@ -587,6 +587,7 @@
                         selectBox.appendChild(opt);
                     }
 
+                    // ملاحظة: الرابط (img) يتم تخزينه في قاعدة البيانات واستخدامه للصور بشكل طبيعي دون عرضه كテキスト في الكارت
                     grid.innerHTML += `
                         <div class="perfume-card">
                             <div class="perfume-img-box">
@@ -699,7 +700,7 @@
         function savePublicReview(e) {
             e.preventDefault();
             const name = document.getElementById('publicReviewName').value.trim();
-            const text = document.getElementById('publicReviewText').value.trim();
+            const text = document.getElementById('publicReviewTest') ? document.getElementById('publicReviewTest').value.trim() : document.getElementById('publicReviewText').value.trim();
 
             if (name && text) {
                 database.ref('reviews').push({ name: name, text: text, timestamp: Date.now() }, (error) => {
