@@ -328,11 +328,6 @@
             font-size: 14px;
         }
 
-        .form-group input[type="file"] {
-            padding: 8px;
-            cursor: pointer;
-        }
-
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary-gold);
@@ -436,21 +431,24 @@
             </div>
 
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
-                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد واختيار الصورة مباشرة</h3>
+                <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد</h3>
+                
                 <div class="form-group">
                     <label>اسم العطر:</label>
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
-                
+
+                <!-- خانة إدخال رابط الصورة فقط -->
                 <div class="form-group">
-                    <label>اختر صورة العطر من جهازك أو هاتفك:</label>
-                    <input type="file" id="adminPerfumeImgFile" accept="image/*" required>
+                    <label>رابط الصورة (URL):</label>
+                    <input type="url" id="adminPerfumeImgUrl" placeholder="https://example.com/image.jpg" required>
                 </div>
 
                 <div class="form-group">
                     <label>السعر:</label>
                     <input type="text" id="adminPerfumePrice" placeholder="مثال: 2700 ج.م">
                 </div>
+                
                 <button type="submit" id="submitBtn" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
 
@@ -587,11 +585,10 @@
                         selectBox.appendChild(opt);
                     }
 
-                    // ملاحظة: الرابط (img) يتم تخزينه في قاعدة البيانات واستخدامه للصور بشكل طبيعي دون عرضه كテキスト في الكارت
                     grid.innerHTML += `
                         <div class="perfume-card">
                             <div class="perfume-img-box">
-                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x350/111111/d4af37?text=Safaa+El+Dahab';">
+                                <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x350/111111/d4af37?text=Safaa+El+Dahab';">
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
@@ -610,46 +607,32 @@
 
             const title = document.getElementById('adminPerfumeTitle').value.trim();
             const price = document.getElementById('adminPerfumePrice').value.trim();
-            const fileInput = document.getElementById('adminPerfumeImgFile');
-            const file = fileInput.files[0];
+            const imgUrl = document.getElementById('adminPerfumeImgUrl').value.trim();
 
-            if (!file) {
-                alert("الرجاء اختيار صورة العطر.");
+            if (!imgUrl) {
+                alert("الرجاء إدخال رابط الصورة (URL).");
                 return;
             }
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري معالجة ونشر العطر...';
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر...';
 
-            const reader = new FileReader();
-            reader.onload = function(uploadEvent) {
-                const base64Image = uploadEvent.target.result;
-
-                database.ref('perfumes').push({
-                    title: title,
-                    img: base64Image,
-                    price: price,
-                    createdAt: Date.now()
-                }, (error) => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً';
-                    if (error) {
-                        alert("حدث خطأ أثناء حفظ العطر: " + error.message);
-                    } else {
-                        document.getElementById('addPerfumeForm').reset();
-                        alert("تم إضافة ونشر العطر بنجاح!");
-                    }
-                });
-            };
-
-            reader.onerror = function(error) {
-                alert("حدث خطأ أثناء قراءة الملف.");
+            database.ref('perfumes').push({
+                title: title,
+                img: imgUrl,
+                price: price,
+                createdAt: Date.now()
+            }, (error) => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً';
-            };
-
-            reader.readAsDataURL(file);
+                if (error) {
+                    alert("حدث خطأ أثناء حفظ العطر: " + error.message);
+                } else {
+                    document.getElementById('addPerfumeForm').reset();
+                    alert("تم إضافة ونشر العطر بنجاح!");
+                }
+            });
         }
 
         function deletePerfume(key) {
@@ -700,7 +683,7 @@
         function savePublicReview(e) {
             e.preventDefault();
             const name = document.getElementById('publicReviewName').value.trim();
-            const text = document.getElementById('publicReviewTest') ? document.getElementById('publicReviewTest').value.trim() : document.getElementById('publicReviewText').value.trim();
+            const text = document.getElementById('publicReviewText').value.trim();
 
             if (name && text) {
                 database.ref('reviews').push({ name: name, text: text, timestamp: Date.now() }, (error) => {
