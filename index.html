@@ -573,17 +573,24 @@
                 const data = snapshot.val();
 
                 if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة حالياً. قم بتسجيل الدخول كمسؤول لإضافة العطور.</p>';
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة حالياً.</p>';
                     return;
                 }
 
-                Object.keys(data).forEach((key) => {
+                Object.keys(data).reverse().forEach((key) => {
                     const p = data[key];
                     
-                    grid.innerHTML = `
+                    if(selectBox) {
+                        let opt = document.createElement('option');
+                        opt.value = key;
+                        opt.textContent = p.title + (p.price ? ` (${p.price})` : '');
+                        selectBox.appendChild(opt);
+                    }
+
+                    grid.innerHTML += `
                         <div class="perfume-card">
                             <div class="perfume-img-box">
-                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.src='https://via.placeholder.com/300x350/111111/d4af37?text=Safaa+El+Dahab'" style="background:#111;">
+                                <img src="${p.img}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x350/111111/d4af37?text=Safaa+El+Dahab';">
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
@@ -591,7 +598,7 @@
                             </div>
                             ${isAdminLoggedIn ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
                         </div>
-                    ` + grid.innerHTML; // أضيفت هكذا لتعرض الأحدث في الأعلى
+                    `;
                 });
             });
         }
@@ -626,7 +633,7 @@
                 } else {
                     document.getElementById('addPerfumeForm').reset();
                     document.getElementById('imagePreviewContainer').style.display = 'none';
-                    alert("تم إضافة العطر وصورته بنجاح!");
+                    alert("تم إضافة العطر وصورته بنجاح للزوار!");
                 }
             });
         }
@@ -645,10 +652,7 @@
 
             if (!selectedKey) {
                 alert("الرجاء اختيار عطر من القائمة أولاً لحذفه.");
-                return;
-            }
-
-            if (confirm("⚠️ تحذير صارم: أنت على وشك حذف هذا العطر من لوحة التحكم. هل تريد المتابعة؟")) {
+            } else if (confirm("⚠️ تحذير صارم: أنت على وشك حذف هذا العطر نهائياً. هل تريد المتابعة؟")) {
                 database.ref('perfumes').child(selectedKey).remove().then(() => {
                     alert("تم حذف العطر بنجاح.");
                 });
@@ -681,7 +685,7 @@
 
         function savePublicReview(e) {
             e.preventDefault();
-            const name = document.getElementById('publicReviewName').value.TexT ? document.getElementById('publicReviewName').value.trim() : document.getElementById('publicReviewName').value.trim();
+            const name = document.getElementById('publicReviewName').value.trim();
             const text = document.getElementById('publicReviewText').value.trim();
 
             if (name && text) {
@@ -704,7 +708,7 @@
 
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    if (user_mail_check = userCredential.user.email !== ADMIN_EMAIL) {
+                    if (userCredential.user.email !== ADMIN_EMAIL) {
                         alert("عفواً، هذا الحساب لا يملك صلاحيات الإشراف!");
                         auth.signOut();
                         return;
