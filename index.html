@@ -7,7 +7,6 @@
     <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root {
             --primary-gold: #d4af37;
@@ -284,7 +283,10 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.85);
             z-index: 2000;
             justify-content: center;
@@ -494,7 +496,8 @@
         </div>
         <div class="header-left">
             <div class="user-greeting" id="userGreetingArea">
-                <i class="fa-solid fa-user-check" style="color:var(--primary-gold);"></i> <span id="currentUserEmailText"></span>
+                <i class="fa-solid fa-user-check" style="color:var(--primary-gold);"></i>
+                <span id="currentUserEmailText"></span>
             </div>
             <button class="btn-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
             <button class="btn-nav" id="authBtn" onclick="openAuthModal()"><i class="fa-solid fa-user"></i> دخول / تسجيل</button>
@@ -503,31 +506,26 @@
     </header>
 
     <div class="container">
-
         <!-- لوحة التحكم للمشرف -->
         <div id="admin-panel">
             <div class="admin-header">
                 <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم والإدارة</h2>
             </div>
-
+            
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
                 <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد</h3>
-                
                 <div class="form-group">
                     <label>اسم العطر:</label>
                     <input type="text" id="adminPerfumeTitle" placeholder="مثال: عطر عود ريشة الملكي" required>
                 </div>
-
                 <div class="form-group">
                     <label>رابط الصورة (URL):</label>
                     <input type="url" id="adminPerfumeImgUrl" placeholder="https://example.com/image.jpg" required>
                 </div>
-
                 <div class="form-group">
                     <label>السعر:</label>
                     <input type="text" id="adminPerfumePrice" placeholder="مثال: 2700 ج.م">
                 </div>
-                
                 <button type="submit" id="submitBtn" class="btn-gold"><i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً</button>
             </form>
 
@@ -571,13 +569,23 @@
         <section id="reviewsSection">
             <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء</h2>
             <div class="reviews-grid" id="reviewsGrid"></div>
-
+            
             <div class="public-review-box">
                 <form id="publicReviewForm" onsubmit="savePublicReview(event)">
                     <h3><i class="fa-solid fa-pen-nib"></i> أضف رأيك أو تقييمك للموقع</h3>
                     <div class="form-group">
                         <label>اسم الشخص:</label>
                         <input type="text" id="publicReviewName" placeholder="اكتب اسمك هنا..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>التقييم:</label>
+                        <select id="publicReviewRating">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 من 5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 من 5)</option>
+                            <option value="3">⭐⭐⭐ (3 من 5)</option>
+                            <option value="2">⭐⭐ (2 من 5)</option>
+                            <option value="1">⭐ (1 من 5)</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>الرأي أو التعليق:</label>
@@ -587,7 +595,6 @@
                 </form>
             </div>
         </section>
-
     </div>
 
     <!-- نافذة تسجيل الدخول / إنشاء حساب للعملاء والمشرف -->
@@ -597,7 +604,6 @@
                 <h3 style="color:var(--primary-gold);" id="authModalTitle"><i class="fa-solid fa-lock"></i> تسجيل الدخول</h3>
                 <span onclick="closeAuthModal()" style="color:#fff; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
             </div>
-            
             <form id="authForm" onsubmit="handleAuthSubmit(event)">
                 <div class="form-group">
                     <label>البريد الإلكتروني:</label>
@@ -609,7 +615,6 @@
                 </div>
                 <button type="submit" class="btn-gold" id="authSubmitBtn"><i class="fa-solid fa-right-to-bracket"></i> دخول</button>
             </form>
-
             <div class="auth-switch" id="authSwitchText">
                 ليس لديك حساب؟ <span onclick="toggleAuthMode()">إنشاء حساب جديد</span>
             </div>
@@ -647,7 +652,6 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
-        // تثبيت جلسة تسجيل الدخول للمشرف ولكل العملاء الجدد دائمًا
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
@@ -744,7 +748,6 @@
                     tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">لا يوجد عملاء مسجلين حتى الآن.</td></tr>';
                     return;
                 }
-
                 let index = 1;
                 Object.values(data).forEach((client) => {
                     tableBody.innerHTML += `
@@ -762,28 +765,23 @@
             const grid = document.getElementById('perfumesGrid');
             const selectBox = document.getElementById('deletePerfumeSelect');
             const isAdmin = currentLoggedInUser && currentLoggedInUser.email === ADMIN_EMAIL;
-            
+
             database.ref('perfumes').on('value', (snapshot) => {
                 grid.innerHTML = '';
                 if(selectBox) selectBox.innerHTML = '<option value="">-- اختر عطراً للحذف --</option>';
-                
                 const data = snapshot.val();
-
                 if (!data) {
                     grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة حالياً.</p>';
                     return;
                 }
-
                 Object.keys(data).reverse().forEach((key) => {
                     const p = data[key];
-                    
                     if(selectBox) {
                         let opt = document.createElement('option');
                         opt.value = key;
                         opt.textContent = p.title + (p.price ? ` (${p.price})` : '');
                         selectBox.appendChild(opt);
                     }
-
                     grid.innerHTML += `
                         <div class="perfume-card">
                             <div class="perfume-img-box">
@@ -845,7 +843,6 @@
         function confirmAndDeletePerfume() {
             const selectBox = document.getElementById('deletePerfumeSelect');
             const selectedKey = selectBox.value;
-
             if (!selectedKey) {
                 alert("الرجاء اختيار عطر من القائمة أولاً لحذفه.");
             } else if (confirm("⚠️ تحذير صارم: أنت على وشك حذف هذا العطر نهائياً. هل تريد المتابعة؟")) {
@@ -864,13 +861,20 @@
                     grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد تقييمات حتى الآن.</p>';
                     return;
                 }
-
                 Object.values(data).reverse().forEach((r) => {
+                    const count = r.rating || 5;
+                    let starsHtml = '';
+                    for (let i = 0; i < 5; i++) {
+                        if (i < count) {
+                            starsHtml += '<i class="fa-solid fa-star"></i>';
+                        } else {
+                            starsHtml += '<i class="fa-regular fa-star" style="color:#555;"></i>';
+                        }
+                    }
+
                     grid.innerHTML += `
                         <div class="review-card">
-                            <div class="review-stars">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            </div>
+                            <div class="review-stars">${starsHtml}</div>
                             <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
                             <p>${escapeHtml(r.text)}</p>
                         </div>
@@ -882,10 +886,16 @@
         function savePublicReview(e) {
             e.preventDefault();
             const name = document.getElementById('publicReviewName').value.trim();
+            const rating = parseInt(document.getElementById('publicReviewRating').value) || 5;
             const text = document.getElementById('publicReviewText').value.trim();
 
             if (name && text) {
-                database.ref('reviews').push({ name: name, text: text, timestamp: Date.now() }, (error) => {
+                database.ref('reviews').push({
+                    name: name,
+                    rating: rating,
+                    text: text,
+                    timestamp: Date.now()
+                }, (error) => {
                     if (!error) {
                         document.getElementById('publicReviewForm').reset();
                         alert("تم نشر تقييمك بنجاح!");
@@ -894,8 +904,13 @@
             }
         }
 
-        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
-        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
 
         function scrollToReviews() {
             document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
