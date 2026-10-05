@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -501,7 +501,6 @@
             </div>
             <button class="btn-nav" onclick="scrollToReviews()"><i class="fa-solid fa-star"></i> التقييمات</button>
             <button class="btn-nav" id="authBtn" onclick="openAuthModal()"><i class="fa-solid fa-user"></i> دخول / تسجيل</button>
-            <button class="btn-nav" id="logoutBtn" onclick="logoutUser()" style="display:none; border-color:#ff6b6b; color:#ff6b6b;"><i class="fa-solid fa-sign-out-alt"></i> خروج</button>
         </div>
     </header>
 
@@ -663,14 +662,12 @@
             const greetingArea = document.getElementById('userGreetingArea');
             const emailText = document.getElementById('currentUserEmailText');
             const authBtn = document.getElementById('authBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
             const adminPanel = document.getElementById('admin-panel');
 
             if (user) {
                 greetingArea.style.display = 'flex';
                 emailText.textContent = user.email;
                 authBtn.style.display = 'none';
-                logoutBtn.style.display = 'flex';
 
                 if (user.email === ADMIN_EMAIL) {
                     adminPanel.style.display = 'block';
@@ -681,7 +678,6 @@
             } else {
                 greetingArea.style.display = 'none';
                 authBtn.style.display = 'flex';
-                logoutBtn.style.display = 'none';
                 adminPanel.style.display = 'none';
             }
             listenToPerfumes();
@@ -733,10 +729,6 @@
                         alert("خطأ في تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.");
                     });
             }
-        }
-
-        function logoutUser() {
-            auth.signOut().then(() => alert("تم تسجيل الخروج بنجاح."));
         }
 
         function loadRegisteredClients() {
