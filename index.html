@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -90,6 +90,34 @@
 
         .header-phones a:hover {
             color: var(--primary-gold);
+        }
+
+        /* زر هدية الخصم مع تأثير النبض */
+        .gift-box-btn {
+            background: linear-gradient(135deg, #d4af37, #ffdf73);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--primary-gold);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+            animation: giftPulse 2s infinite;
+            transition: 0.3s;
+        }
+
+        .gift-box-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes giftPulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
         .header-left {
@@ -301,6 +329,7 @@
             width: 90%;
             max-width: 450px;
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+            text-align: center;
         }
 
         #admin-panel {
@@ -351,6 +380,7 @@
 
         .form-group {
             margin-bottom: 18px;
+            text-align: right;
         }
 
         .form-group label {
@@ -432,6 +462,20 @@
             text-decoration: underline;
         }
 
+        /* كود نتيجة الخصم */
+        .coupon-code-box {
+            background: #222;
+            border: 2px dashed var(--primary-gold);
+            color: var(--primary-gold);
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            user-select: all;
+        }
+
         footer {
             text-align: center;
             padding: 30px 20px;
@@ -492,6 +536,10 @@
                 <a href="https://wa.me/201112720021" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01112720021</a>
                 <span style="color:var(--border-color);">|</span>
                 <a href="https://wa.me/201121130014" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01121130014</a>
+            </div>
+            <!-- زر هدية الخصم العشوائي -->
+            <div class="gift-box-btn" onclick="openGiftModal()">
+                <i class="fa-solid fa-gift"></i> هدية التسجيل
             </div>
         </div>
         <div class="header-left">
@@ -596,6 +644,33 @@
         </section>
     </div>
 
+    <!-- نافذة هدية الخصم -->
+    <div class="modal" id="giftModal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 style="color:var(--primary-gold);"><i class="fa-solid fa-gift"></i> هدية الترحيب بالعملاء الجدد</h3>
+                <span onclick="closeGiftModal()" style="color:#fff; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
+            </div>
+            
+            <div id="giftStep1">
+                <i class="fa-solid fa-box-open" style="font-size: 50px; color: var(--primary-gold); margin: 15px 0;"></i>
+                <p style="color: var(--light-gold); font-size: 15px; margin-bottom: 15px;">
+                    سجل دخولك أو أنشئ حساباً جديداً واضغط لمعرفة نسبة الخصم الخاصة بك (10% أو 20%)!
+                </p>
+                <button class="btn-gold" onclick="spinGift()"><i class="fa-solid fa-dice"></i> افتح الهدية واكشف حظك</button>
+            </div>
+
+            <div id="giftStep2" style="display: none;">
+                <i class="fa-solid fa-champagne-glasses" style="font-size: 45px; color: #28a745; margin-bottom: 10px;"></i>
+                <h4 style="color: #28a745; font-size: 18px;">مبروك! حصلت على خصم:</h4>
+                <div style="font-size: 28px; font-weight: 900; color: var(--primary-gold);" id="discountPercent">10%</div>
+                <p style="font-size: 13px; color: var(--text-gray); margin-top: 5px;">استخدم كود الخصم التالي أثناء الطلب عبر الواتساب:</p>
+                <div class="coupon-code-box" id="couponCode">SAFAA10</div>
+                <button class="btn-gold" onclick="closeGiftModal()">تم، شكراً لك!</button>
+            </div>
+        </div>
+    </div>
+
     <!-- نافذة تسجيل الدخول / إنشاء حساب للعملاء والمشرف -->
     <div class="modal" id="authModal">
         <div class="modal-content">
@@ -683,6 +758,42 @@
             listenToPerfumes();
         });
 
+        // دوال هدية الخصم
+        function openGiftModal() {
+            document.getElementById('giftModal').style.display = 'flex';
+        }
+
+        function closeGiftModal() {
+            document.getElementById('giftModal').style.display = 'none';
+        }
+
+        function spinGift() {
+            if (!currentLoggedInUser) {
+                alert("يرجى تسجيل الدخول أو إنشاء حساب أولاً للحصول على الهدية!");
+                closeGiftModal();
+                openAuthModal();
+                return;
+            }
+
+            const savedDiscount = localStorage.getItem('safaa_user_discount_' + currentLoggedInUser.uid);
+            
+            let percent = 10;
+            if (savedDiscount) {
+                percent = savedDiscount;
+            } else {
+                // سحب عشوائي بين 10% و 20%
+                const options = [10, 20];
+                percent = options[Math.floor(Math.random() * options.length)];
+                localStorage.setItem('safaa_user_discount_' + currentLoggedInUser.uid, percent);
+            }
+
+            document.getElementById('discountPercent').textContent = percent + "%";
+            document.getElementById('couponCode').textContent = "SAFAA" + percent;
+
+            document.getElementById('giftStep1').style.display = 'none';
+            document.getElementById('giftStep2').style.display = 'block';
+        }
+
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
             const title = document.getElementById('authModalTitle');
@@ -714,7 +825,8 @@
                             joinedAt: new Date().toLocaleString('ar-EG')
                         });
                         closeAuthModal();
-                        alert("تم إنشاء الحساب وتسجيل الدخول بنجاح!");
+                        alert("تم إنشاء الحساب بنجاح! يمكنك الآن الضغط على الهدية أعلى الشاشة لكشف نسبة خصمك.");
+                        openGiftModal();
                     })
                     .catch((error) => {
                         alert("خطأ في إنشاء الحساب: " + error.message);
@@ -825,7 +937,7 @@
         }
 
         function deletePerfume(key) {
-            if (confirm("⚠️ تحذير: هل أنت متأكد من حذف هذا العطر نهائياً؟")) {
+            if (confirm("⚠️️ تحذير: هل أنت متأكد من حذف هذا العطر نهائياً؟")) {
                 database.ref('perfumes').child(key).remove().then(() => {
                     alert("تم الحذف بنجاح.");
                 });
