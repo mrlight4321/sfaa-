@@ -7,8 +7,13 @@
     <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
+            /* درجات ألوان الرينج لايت الجديدة */
+            --ring-gold: #d4af37;
+            --ring-yellow: #ffee55;
+            --ring-red: #e63946;
             --primary-gold: #d4af37;
             --dark-gold: #aa820a;
             --light-gold: #f3e5ab;
@@ -32,9 +37,11 @@
             min-height: 100vh;
         }
 
+        /* تحسين الـ Header بحواف إضاءة رينج لايت متوهجة */
         header {
             background: linear-gradient(135deg, #000 0%, #1a1505 100%);
-            border-bottom: 2px solid var(--primary-gold);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, var(--ring-gold), var(--ring-yellow), var(--ring-red)) 1;
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
@@ -44,7 +51,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25), 0 0 15px rgba(230, 57, 70, 0.15);
         }
 
         .header-right {
@@ -59,7 +66,7 @@
             font-size: 24px;
             font-weight: 900;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5), 0 0 15px rgba(255, 238, 85, 0.3);
         }
 
         .logo-area p {
@@ -74,7 +81,7 @@
             background: rgba(212, 175, 55, 0.08);
             padding: 6px 14px;
             border-radius: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 238, 85, 0.3);
         }
 
         .header-phones a {
@@ -89,12 +96,12 @@
         }
 
         .header-phones a:hover {
-            color: var(--primary-gold);
+            color: var(--ring-yellow);
         }
 
-        /* زر هدية الخصم مع تأثير النبض */
+        /* زر هدية الخصم مع تأثير النبض والرينج لايت */
         .gift-box-btn {
-            background: linear-gradient(135deg, #d4af37, #ffdf73);
+            background: linear-gradient(135deg, var(--ring-yellow), var(--ring-gold));
             color: #000;
             padding: 6px 14px;
             border-radius: 20px;
@@ -104,9 +111,8 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            border: 1px solid var(--primary-gold);
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
-            animation: giftPulse 2s infinite;
+            border: 1px solid var(--ring-yellow);
+            animation: ringLightPulse 2s infinite;
             transition: 0.3s;
         }
 
@@ -114,10 +120,16 @@
             transform: scale(1.05);
         }
 
-        @keyframes giftPulse {
-            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        @keyframes ringLightPulse {
+            0% {
+                box-shadow: 0 0 5px var(--ring-gold), 0 0 12px var(--ring-yellow), 0 0 18px rgba(230, 57, 70, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 10px var(--ring-yellow), 0 0 20px rgba(230, 57, 70, 0.8), 0 0 25px var(--ring-gold);
+            }
+            100% {
+                box-shadow: 0 0 5px var(--ring-gold), 0 0 12px var(--ring-yellow), 0 0 18px rgba(230, 57, 70, 0.5);
+            }
         }
 
         .header-left {
@@ -143,9 +155,10 @@
         }
 
         .btn-nav:hover {
-            background: var(--primary-gold);
+            background: linear-gradient(135deg, var(--ring-gold), var(--ring-yellow));
             color: #000;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(255, 238, 85, 0.5), 0 0 20px rgba(230, 57, 70, 0.3);
+            border-color: var(--ring-yellow);
         }
 
         .user-greeting {
@@ -185,18 +198,24 @@
             margin-bottom: 50px;
         }
 
+        /* كروت العطور بحدود وتأثير توهج الرينج لايت (ذهبي + أصفر + أحمر) */
         .perfume-card {
             background-color: var(--card-black);
-            border: 1px solid var(--border-color);
+            border: 2px solid transparent;
             border-radius: 12px;
             overflow: hidden;
+            background-image: linear-gradient(var(--card-black), var(--card-black)), 
+                              linear-gradient(135deg, #d4af37 0%, #ffee55 65%, #e63946 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .perfume-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
-            border-color: var(--primary-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6), 
+                        0 0 25px rgba(255, 238, 85, 0.5), 
+                        0 0 35px rgba(230, 57, 70, 0.4);
         }
 
         .perfume-img-box {
@@ -229,10 +248,11 @@
         }
 
         .perfume-price {
-            color: var(--primary-gold);
+            color: var(--ring-yellow);
             font-weight: bold;
             font-size: 15px;
             margin-top: 6px;
+            text-shadow: 0 0 8px rgba(255, 238, 85, 0.3);
         }
 
         .reviews-grid {
@@ -244,9 +264,13 @@
 
         .review-card {
             background-color: var(--card-black);
-            border: 1px solid var(--border-color);
+            border: 1px solid transparent;
             border-radius: 12px;
             padding: 20px;
+            background-image: linear-gradient(var(--card-black), var(--card-black)), 
+                              linear-gradient(135deg, rgba(212, 175, 55, 0.4), rgba(255, 238, 85, 0.4), rgba(230, 57, 70, 0.2));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
@@ -294,23 +318,31 @@
 
         .modal-content {
             background: #141414;
-            border: 2px solid var(--primary-gold);
+            border: 2px solid transparent;
             border-radius: 15px;
             padding: 30px;
             width: 90%;
             max-width: 450px;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+            background-image: linear-gradient(#141414, #141414), 
+                              linear-gradient(135deg, #d4af37, #ffee55, #e63946);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4), 0 0 20px rgba(230, 57, 70, 0.2);
             text-align: center;
         }
 
         #admin-panel {
             display: none;
             background: #111;
-            border: 2px solid var(--primary-gold);
+            border: 2px solid transparent;
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 40px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+            background-image: linear-gradient(#111, #111), 
+                              linear-gradient(135deg, #d4af37, #ffee55, #e63946);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
         }
 
         .admin-header {
@@ -373,11 +405,12 @@
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: var(--primary-gold);
+            border-color: var(--ring-yellow);
+            box-shadow: 0 0 8px rgba(255, 238, 85, 0.3);
         }
 
         .btn-gold {
-            background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
+            background: linear-gradient(135deg, var(--ring-yellow), var(--ring-gold));
             color: #000;
             border: none;
             padding: 12px 25px;
@@ -390,8 +423,8 @@
         }
 
         .btn-gold:hover {
-            opacity: 0.9;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            opacity: 0.95;
+            box-shadow: 0 0 15px rgba(255, 238, 85, 0.5), 0 0 20px rgba(230, 57, 70, 0.3);
         }
 
         .btn-danger {
@@ -436,8 +469,8 @@
         /* كود نتيجة الخصم */
         .coupon-code-box {
             background: #222;
-            border: 2px dashed var(--primary-gold);
-            color: var(--primary-gold);
+            border: 2px dashed var(--ring-yellow);
+            color: var(--ring-yellow);
             font-size: 20px;
             font-weight: bold;
             padding: 10px;
@@ -452,7 +485,8 @@
             padding: 30px 20px;
             background: #050505;
             color: var(--text-gray);
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid transparent;
+            border-image: linear-gradient(to right, var(--ring-gold), var(--ring-yellow), var(--ring-red)) 1;
             margin-top: 50px;
             font-size: 13px;
         }
@@ -490,7 +524,7 @@
         }
 
         .footer-brand a:hover {
-            color: var(--primary-gold);
+            color: var(--ring-yellow);
             text-decoration: underline;
         }
     </style>
@@ -513,6 +547,7 @@
                 <i class="fa-solid fa-gift"></i> هدية التسجيل
             </div>
         </div>
+
         <div class="header-left">
             <div class="user-greeting" id="userGreetingArea">
                 <i class="fa-solid fa-user-check" style="color:var(--primary-gold);"></i>
@@ -586,6 +621,7 @@
         <section id="reviewsSection">
             <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء</h2>
             <div class="reviews-grid" id="reviewsGrid"></div>
+
             <div class="public-review-box">
                 <form id="publicReviewForm" onsubmit="savePublicReview(event)">
                     <h3><i class="fa-solid fa-pen-nib"></i> أضف رأيك أو تقييمك للموقع</h3>
@@ -620,7 +656,6 @@
                 <h3 style="color:var(--primary-gold);"><i class="fa-solid fa-gift"></i> هدية الترحيب بالعملاء الجدد</h3>
                 <span onclick="closeGiftModal()" style="color:#fff; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
             </div>
-            
             <div id="giftStep1">
                 <i class="fa-solid fa-box-open" style="font-size: 50px; color: var(--primary-gold); margin: 15px 0;"></i>
                 <p style="color: var(--light-gold); font-size: 15px; margin-bottom: 15px;">
@@ -628,29 +663,24 @@
                 </p>
                 <button class="btn-gold" onclick="spinGift()"><i class="fa-solid fa-dice"></i> افتح الهدية واكشف حظك</button>
             </div>
-
             <div id="giftStep2" style="display: none;">
                 <i class="fa-solid fa-clock-rotate-left" style="font-size: 45px; color: var(--primary-gold); margin-bottom: 10px;"></i>
-                
                 <div id="activeGiftBox">
                     <h4 style="color: #28a745; font-size: 18px;">مبروك! حصلت على خصم:</h4>
-                    <div style="font-size: 28px; font-weight: 900; color: var(--primary-gold);" id="discountPercent">10%</div>
+                    <div style="font-size: 28px; font-weight: 900; color: var(--ring-yellow);" id="discountPercent">10%</div>
                     <p style="font-size: 13px; color: var(--text-gray); margin-top: 5px;">استخدم كود الخصم التالي أثناء الطلب عبر الواتساب:</p>
                     <div class="coupon-code-box" id="couponCode">SAFAA10</div>
-                    
                     <!-- العداد التنازلي -->
                     <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
                         <div style="font-size: 12px; color: var(--text-gray);">ينتهي الخصم خلال:</div>
                         <div id="timerDisplay" style="font-size: 18px; font-weight: bold; color: #ff6b6b; font-family: monospace;">48:00:00</div>
                     </div>
                 </div>
-
                 <!-- رسالة انتهاء الصلاحية -->
                 <div id="expiredGiftBox" style="display: none;">
                     <h4 style="color: #dc3545; font-size: 18px; margin-bottom: 10px;">عذراً، انتهت صلاحية هذا الخصم!</h4>
                     <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 15px;">خصم الـ 48 ساعة الخاص بك انتهى. يمكنك دائماً الطلب بالأسعار الأساسية العادية.</p>
                 </div>
-
                 <button class="btn-gold" onclick="closeGiftModal()">إغلاق</button>
             </div>
         </div>
@@ -741,16 +771,31 @@
                 authBtn.style.display = 'flex';
                 adminPanel.style.display = 'none';
             }
+
             listenToPerfumes();
             listenToReviews();
         });
 
         // دوال النوافذ
-        function openGiftModal() { document.getElementById('giftModal').style.display = 'flex'; }
-        function closeGiftModal() { document.getElementById('giftModal').style.display = 'none'; }
-        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
-        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
-        function scrollToReviews() { document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' }); }
+        function openGiftModal() {
+            document.getElementById('giftModal').style.display = 'flex';
+        }
+
+        function closeGiftModal() {
+            document.getElementById('giftModal').style.display = 'none';
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function scrollToReviews() {
+            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+        }
 
         // دالة الهدية بالعداد التنازلي 48 ساعة
         function spinGift() {
@@ -774,7 +819,6 @@
                 const options = [10, 20];
                 savedDiscount = options[Math.floor(Math.random() * options.length)];
                 savedTime = now;
-
                 localStorage.setItem(storageKeyDiscount, savedDiscount);
                 localStorage.setItem(storageKeyTime, savedTime);
             }
@@ -791,10 +835,8 @@
             } else {
                 document.getElementById('activeGiftBox').style.display = 'block';
                 document.getElementById('expiredGiftBox').style.display = 'none';
-                
                 document.getElementById('discountPercent').textContent = savedDiscount + "%";
                 document.getElementById('couponCode').textContent = "SAFAA" + savedDiscount;
-
                 startCountdown(expirationTime);
             }
         }
@@ -818,6 +860,7 @@
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                 const format = (num) => String(num).padStart(2, '0');
+
                 document.getElementById('timerDisplay').textContent = `${format(hours)}:${format(minutes)}:${format(seconds)}`;
             }
 
@@ -857,43 +900,76 @@
                             joinedAt: new Date().toLocaleString('ar-EG')
                         });
                         closeAuthModal();
-                        alert("تم إنشاء الحساب بنجاح! يمكنك الآن الضغط على الهدية أعلى الشاشة لكشف نسبة خصمك.");
-                        openGiftModal();
+                        alert("تم إنشاء الحساب بنجاح!");
                     })
                     .catch((error) => {
-                        alert("خطأ في إنشاء الحساب: " + error.message);
+                        alert("خطأ أثناء إنشاء الحساب: " + error.message);
                     });
             } else {
                 auth.signInWithEmailAndPassword(email, password)
                     .then(() => {
                         closeAuthModal();
-                        alert("تم تسجيل الدخول بنجاح.");
                     })
                     .catch((error) => {
-                        alert("خطأ في تسجيل الدخول: البريد أو كلمة المرور غير صحيحة.");
+                        alert("خطأ أثناء تسجيل الدخول: " + error.message);
                     });
             }
         }
 
-        // تحكم المشرف وإدارة العطور
+        // جلب قائمة العملاء للمشرف
         function loadRegisteredClients() {
-            const tableBody = document.getElementById('clientsTableBody');
             database.ref('clients').on('value', (snapshot) => {
-                tableBody.innerHTML = '';
+                const tbody = document.getElementById('clientsTableBody');
+                tbody.innerHTML = '';
+
                 const data = snapshot.val();
                 if (!data) {
-                    tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">لا يوجد عملاء مسجلين حتى الآن.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-gray);">لا يوجد عملاء مسجلين حتى الآن.</td></tr>';
                     return;
                 }
+
                 let index = 1;
                 Object.values(data).forEach((client) => {
-                    tableBody.innerHTML += `
+                    const row = `
                         <tr>
                             <td>${index++}</td>
                             <td>${escapeHtml(client.email)}</td>
-                            <td>${escapeHtml(client.joinedAt || 'غير متوفر')}</td>
+                            <td>${escapeHtml(client.joinedAt || 'غير محدد')}</td>
                         </tr>
                     `;
+                    tbody.innerHTML += row;
+                });
+            });
+        }
+
+        // التعامل مع العطور
+        function listenToPerfumes() {
+            database.ref('perfumes').on('value', (snapshot) => {
+                const grid = document.getElementById('perfumesGrid');
+                const select = document.getElementById('deletePerfumeSelect');
+                grid.innerHTML = '';
+                select.innerHTML = '<option value="">-- اختر عطراً للحذف --</option>';
+
+                const data = snapshot.val();
+                if (!data) {
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة بعد.</p>';
+                    return;
+                }
+
+                Object.entries(data).forEach(([id, perfume]) => {
+                    grid.innerHTML += `
+                        <div class="perfume-card">
+                            <div class="perfume-img-box">
+                                <img src="${escapeHtml(perfume.imgUrl)}" alt="${escapeHtml(perfume.title)}">
+                            </div>
+                            <div class="perfume-info">
+                                <h3>${escapeHtml(perfume.title)}</h3>
+                                <div class="perfume-price">${escapeHtml(perfume.price || 'حسب الطلب')}</div>
+                            </div>
+                        </div>
+                    `;
+
+                    select.innerHTML += `<option value="${id}">${escapeHtml(perfume.title)}</option>`;
                 });
             });
         }
@@ -901,95 +977,66 @@
         function addNewPerfume(e) {
             e.preventDefault();
             const title = document.getElementById('adminPerfumeTitle').value.trim();
-            const img = document.getElementById('adminPerfumeImgUrl').value.trim();
+            const imgUrl = document.getElementById('adminPerfumeImgUrl').value.trim();
             const price = document.getElementById('adminPerfumePrice').value.trim();
 
             const newRef = database.ref('perfumes').push();
-            newRef.set({ title, img, price }, (error) => {
-                if (error) {
-                    alert("خطأ أثناء إضافة العطر: " + error.message);
-                } else {
-                    alert("تم نشر العطر بنجاح!");
-                    document.getElementById('addPerfumeForm').reset();
-                }
+            newRef.set({
+                title: title,
+                imgUrl: imgUrl,
+                price: price
+            }).then(() => {
+                document.getElementById('addPerfumeForm').reset();
+                alert("تم إضافة العطر بنجاح!");
+            }).catch((err) => {
+                alert("حدث خطأ: " + err.message);
             });
         }
 
         function confirmAndDeletePerfume() {
-            const selectBox = document.getElementById('deletePerfumeSelect');
-            const perfumeId = selectBox.value;
+            const select = document.getElementById('deletePerfumeSelect');
+            const perfumeId = select.value;
             if (!perfumeId) {
-                alert("يرجى اختيار عطر للحذف أولاً.");
+                alert("يرجى اختيار عطر للحذف أولاً!");
                 return;
             }
-            if (confirm("هل أنت تأكد من رغبتك في حذف هذا العطر نهائياً؟")) {
-                database.ref('perfumes/' + perfumeId).remove()
-                    .then(() => alert("تم حذف العطر بنجاح."))
-                    .catch(err => alert("حدث خطأ أثناء الحذف: " + err.message));
+
+            if (confirm("هل أنت تأكد من حذف هذا العطر؟")) {
+                database.ref('perfumes/' + perfumeId).remove().then(() => {
+                    alert("تم حذف العطر بنجاح!");
+                });
             }
         }
 
-        function listenToPerfumes() {
-            const grid = document.getElementById('perfumesGrid');
-            const selectBox = document.getElementById('deletePerfumeSelect');
-            
-            database.ref('perfumes').on('value', (snapshot) => {
-                grid.innerHTML = '';
-                if(selectBox) selectBox.innerHTML = '<option value="">-- اختر عطراً للحذف --</option>';
-                const data = snapshot.val();
-                if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد عطور مضافة حالياً.</p>';
-                    return;
-                }
-                Object.keys(data).reverse().forEach((key) => {
-                    const p = data[key];
-                    if(selectBox) {
-                        let opt = document.createElement('option');
-                        opt.value = key;
-                        opt.textContent = p.title + (p.price ? ` (${p.price})` : '');
-                        selectBox.appendChild(opt);
-                    }
-                    grid.innerHTML += `
-                        <div class="perfume-card">
-                            <div class="perfume-img-box">
-                                <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x350/111111/d4af37?text=Safaa+El+Dahab';">
-                            </div>
-                            <div class="perfume-info">
-                                <h3>${escapeHtml(p.title)}</h3>
-                                ${p.price ? `<div class="perfume-price">${escapeHtml(p.price)}</div>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-            });
-        }
-
+        // آراء وتقييمات العملاء
         function savePublicReview(e) {
             e.preventDefault();
             const name = document.getElementById('publicReviewName').value.trim();
             const rating = document.getElementById('publicReviewRating').value;
             const text = document.getElementById('publicReviewText').value.trim();
 
-            const newReviewRef = database.ref('reviews').push();
-            newReviewRef.set({ name, rating, text }, (error) => {
-                if (error) {
-                    alert("حدث خطأ أثناء إرسال التقييم: " + error.message);
-                } else {
-                    alert("شكراً لك! تم إرسال تقييمك بنجاح.");
-                    document.getElementById('publicReviewForm').reset();
-                }
+            database.ref('reviews').push({
+                name: name,
+                rating: rating,
+                text: text,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                document.getElementById('publicReviewForm').reset();
+                alert("شكراً لك! تم نشر تقييمك بنجاح.");
             });
         }
 
         function listenToReviews() {
-            const grid = document.getElementById('reviewsGrid');
             database.ref('reviews').on('value', (snapshot) => {
+                const grid = document.getElementById('reviewsGrid');
                 grid.innerHTML = '';
+
                 const data = snapshot.val();
                 if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد تقييمات حتى الآن. كن أول من يضيف تقييمه!</p>';
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد تقييمات مضافة بعد.</p>';
                     return;
                 }
+
                 Object.values(data).reverse().forEach((r) => {
                     let stars = '⭐'.repeat(parseInt(r.rating || 5));
                     grid.innerHTML += `
