@@ -235,29 +235,6 @@
             margin-top: 6px;
         }
 
-        .card-delete-btn {
-            width: calc(100% - 30px);
-            margin: 0 15px 15px 15px;
-            background: rgba(220, 53, 69, 0.2);
-            border: 1px solid #dc3545;
-            color: #ff6b6b;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: 0.3s;
-        }
-
-        .card-delete-btn:hover {
-            background: #dc3545;
-            color: #fff;
-        }
-
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -286,12 +263,6 @@
             color: var(--text-white);
             font-size: 14px;
             line-height: 1.6;
-        }
-
-        .review-stars {
-            color: #ffc107;
-            font-size: 13px;
-            margin-bottom: 10px;
         }
 
         .public-review-box {
@@ -558,7 +529,6 @@
             <div class="admin-header">
                 <h2 style="color:var(--primary-gold);"><i class="fa-solid fa-user-shield"></i> لوحة التحكم والإدارة</h2>
             </div>
-            
             <form id="addPerfumeForm" onsubmit="addNewPerfume(event)" style="margin-bottom: 25px;">
                 <h3 style="color: var(--light-gold); margin-bottom: 15px;"><i class="fa-solid fa-plus-circle"></i> إضافة عطر جديد</h3>
                 <div class="form-group">
@@ -616,7 +586,6 @@
         <section id="reviewsSection">
             <h2 class="section-title"><i class="fa-solid fa-comments"></i> آراء وتقييمات العملاء</h2>
             <div class="reviews-grid" id="reviewsGrid"></div>
-            
             <div class="public-review-box">
                 <form id="publicReviewForm" onsubmit="savePublicReview(event)">
                     <h3><i class="fa-solid fa-pen-nib"></i> أضف رأيك أو تقييمك للموقع</h3>
@@ -661,17 +630,33 @@
             </div>
 
             <div id="giftStep2" style="display: none;">
-                <i class="fa-solid fa-champagne-glasses" style="font-size: 45px; color: #28a745; margin-bottom: 10px;"></i>
-                <h4 style="color: #28a745; font-size: 18px;">مبروك! حصلت على خصم:</h4>
-                <div style="font-size: 28px; font-weight: 900; color: var(--primary-gold);" id="discountPercent">10%</div>
-                <p style="font-size: 13px; color: var(--text-gray); margin-top: 5px;">استخدم كود الخصم التالي أثناء الطلب عبر الواتساب:</p>
-                <div class="coupon-code-box" id="couponCode">SAFAA10</div>
-                <button class="btn-gold" onclick="closeGiftModal()">تم، شكراً لك!</button>
+                <i class="fa-solid fa-clock-rotate-left" style="font-size: 45px; color: var(--primary-gold); margin-bottom: 10px;"></i>
+                
+                <div id="activeGiftBox">
+                    <h4 style="color: #28a745; font-size: 18px;">مبروك! حصلت على خصم:</h4>
+                    <div style="font-size: 28px; font-weight: 900; color: var(--primary-gold);" id="discountPercent">10%</div>
+                    <p style="font-size: 13px; color: var(--text-gray); margin-top: 5px;">استخدم كود الخصم التالي أثناء الطلب عبر الواتساب:</p>
+                    <div class="coupon-code-box" id="couponCode">SAFAA10</div>
+                    
+                    <!-- العداد التنازلي -->
+                    <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="font-size: 12px; color: var(--text-gray);">ينتهي الخصم خلال:</div>
+                        <div id="timerDisplay" style="font-size: 18px; font-weight: bold; color: #ff6b6b; font-family: monospace;">48:00:00</div>
+                    </div>
+                </div>
+
+                <!-- رسالة انتهاء الصلاحية -->
+                <div id="expiredGiftBox" style="display: none;">
+                    <h4 style="color: #dc3545; font-size: 18px; margin-bottom: 10px;">عذراً، انتهت صلاحية هذا الخصم!</h4>
+                    <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 15px;">خصم الـ 48 ساعة الخاص بك انتهى. يمكنك دائماً الطلب بالأسعار الأساسية العادية.</p>
+                </div>
+
+                <button class="btn-gold" onclick="closeGiftModal()">إغلاق</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة تسجيل الدخول / إنشاء حساب للعملاء والمشرف -->
+    <!-- نافذة تسجيل الدخول / إنشاء حساب -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -731,6 +716,7 @@
         const ADMIN_EMAIL = "nooreldeen834@gmail.com";
         let isSignUpMode = false;
         let currentLoggedInUser = null;
+        let timerInterval = null;
 
         auth.onAuthStateChanged((user) => {
             currentLoggedInUser = user;
@@ -756,17 +742,17 @@
                 adminPanel.style.display = 'none';
             }
             listenToPerfumes();
+            listenToReviews();
         });
 
-        // دوال هدية الخصم
-        function openGiftModal() {
-            document.getElementById('giftModal').style.display = 'flex';
-        }
+        // دوال النوافذ
+        function openGiftModal() { document.getElementById('giftModal').style.display = 'flex'; }
+        function closeGiftModal() { document.getElementById('giftModal').style.display = 'none'; }
+        function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+        function scrollToReviews() { document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' }); }
 
-        function closeGiftModal() {
-            document.getElementById('giftModal').style.display = 'none';
-        }
-
+        // دالة الهدية بالعداد التنازلي 48 ساعة
         function spinGift() {
             if (!currentLoggedInUser) {
                 alert("يرجى تسجيل الدخول أو إنشاء حساب أولاً للحصول على الهدية!");
@@ -775,25 +761,71 @@
                 return;
             }
 
-            const savedDiscount = localStorage.getItem('safaa_user_discount_' + currentLoggedInUser.uid);
-            
-            let percent = 10;
-            if (savedDiscount) {
-                percent = savedDiscount;
-            } else {
-                // سحب عشوائي بين 10% و 20%
+            const userId = currentLoggedInUser.uid;
+            const storageKeyDiscount = 'safaa_user_discount_' + userId;
+            const storageKeyTime = 'safaa_user_discount_time_' + userId;
+
+            let savedDiscount = localStorage.getItem(storageKeyDiscount);
+            let savedTime = localStorage.getItem(storageKeyTime);
+
+            const now = new Date().getTime();
+
+            if (!savedDiscount || !savedTime) {
                 const options = [10, 20];
-                percent = options[Math.floor(Math.random() * options.length)];
-                localStorage.setItem('safaa_user_discount_' + currentLoggedInUser.uid, percent);
+                savedDiscount = options[Math.floor(Math.random() * options.length)];
+                savedTime = now;
+
+                localStorage.setItem(storageKeyDiscount, savedDiscount);
+                localStorage.setItem(storageKeyTime, savedTime);
             }
 
-            document.getElementById('discountPercent').textContent = percent + "%";
-            document.getElementById('couponCode').textContent = "SAFAA" + percent;
+            const durationLimit = 48 * 60 * 60 * 1000; // 48 ساعة
+            const expirationTime = parseInt(savedTime) + durationLimit;
 
             document.getElementById('giftStep1').style.display = 'none';
             document.getElementById('giftStep2').style.display = 'block';
+
+            if (now > expirationTime) {
+                document.getElementById('activeGiftBox').style.display = 'none';
+                document.getElementById('expiredGiftBox').style.display = 'block';
+            } else {
+                document.getElementById('activeGiftBox').style.display = 'block';
+                document.getElementById('expiredGiftBox').style.display = 'none';
+                
+                document.getElementById('discountPercent').textContent = savedDiscount + "%";
+                document.getElementById('couponCode').textContent = "SAFAA" + savedDiscount;
+
+                startCountdown(expirationTime);
+            }
         }
 
+        function startCountdown(expirationTime) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = expirationTime - now;
+
+                if (distance <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('activeGiftBox').style.display = 'none';
+                    document.getElementById('expiredGiftBox').style.display = 'block';
+                    return;
+                }
+
+                const hours = Math.floor(distance / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const format = (num) => String(num).padStart(2, '0');
+                document.getElementById('timerDisplay').textContent = `${format(hours)}:${format(minutes)}:${format(seconds)}`;
+            }
+
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // تسجيل الحساب والتبديل
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
             const title = document.getElementById('authModalTitle');
@@ -843,6 +875,7 @@
             }
         }
 
+        // تحكم المشرف وإدارة العطور
         function loadRegisteredClients() {
             const tableBody = document.getElementById('clientsTableBody');
             database.ref('clients').on('value', (snapshot) => {
@@ -865,11 +898,41 @@
             });
         }
 
+        function addNewPerfume(e) {
+            e.preventDefault();
+            const title = document.getElementById('adminPerfumeTitle').value.trim();
+            const img = document.getElementById('adminPerfumeImgUrl').value.trim();
+            const price = document.getElementById('adminPerfumePrice').value.trim();
+
+            const newRef = database.ref('perfumes').push();
+            newRef.set({ title, img, price }, (error) => {
+                if (error) {
+                    alert("خطأ أثناء إضافة العطر: " + error.message);
+                } else {
+                    alert("تم نشر العطر بنجاح!");
+                    document.getElementById('addPerfumeForm').reset();
+                }
+            });
+        }
+
+        function confirmAndDeletePerfume() {
+            const selectBox = document.getElementById('deletePerfumeSelect');
+            const perfumeId = selectBox.value;
+            if (!perfumeId) {
+                alert("يرجى اختيار عطر للحذف أولاً.");
+                return;
+            }
+            if (confirm("هل أنت تأكد من رغبتك في حذف هذا العطر نهائياً؟")) {
+                database.ref('perfumes/' + perfumeId).remove()
+                    .then(() => alert("تم حذف العطر بنجاح."))
+                    .catch(err => alert("حدث خطأ أثناء الحذف: " + err.message));
+            }
+        }
+
         function listenToPerfumes() {
             const grid = document.getElementById('perfumesGrid');
             const selectBox = document.getElementById('deletePerfumeSelect');
-            const isAdmin = currentLoggedInUser && currentLoggedInUser.email === ADMIN_EMAIL;
-
+            
             database.ref('perfumes').on('value', (snapshot) => {
                 grid.innerHTML = '';
                 if(selectBox) selectBox.innerHTML = '<option value="">-- اختر عطراً للحذف --</option>';
@@ -893,94 +956,8 @@
                             </div>
                             <div class="perfume-info">
                                 <h3>${escapeHtml(p.title)}</h3>
-                                ${p.price ? `<p class="perfume-price">${escapeHtml(p.price)}</p>` : ''}
+                                ${p.price ? `<div class="perfume-price">${escapeHtml(p.price)}</div>` : ''}
                             </div>
-                            ${isAdmin ? `<button class="card-delete-btn" onclick="deletePerfume('${key}')"><i class="fa-solid fa-trash-can"></i> حذف هذا العطر</button>` : ''}
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        function addNewPerfume(e) {
-            e.preventDefault();
-            if (!currentLoggedInUser || currentLoggedInUser.email !== ADMIN_EMAIL) return;
-
-            const title = document.getElementById('adminPerfumeTitle').value.trim();
-            const price = document.getElementById('adminPerfumePrice').value.trim();
-            const imgUrl = document.getElementById('adminPerfumeImgUrl').value.trim();
-
-            if (!imgUrl) {
-                alert("الرجاء إدخال رابط الصورة (URL).");
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر...';
-
-            database.ref('perfumes').push({
-                title: title,
-                img: imgUrl,
-                price: price,
-                createdAt: Date.now()
-            }, (error) => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-cloud-upload-alt"></i> نشر العطر فوراً';
-                if (error) {
-                    alert("حدث خطأ أثناء حفظ العطر: " + error.message);
-                } else {
-                    document.getElementById('addPerfumeForm').reset();
-                    alert("تم إضافة ونشر العطر بنجاح!");
-                }
-            });
-        }
-
-        function deletePerfume(key) {
-            if (confirm("⚠️️ تحذير: هل أنت متأكد من حذف هذا العطر نهائياً؟")) {
-                database.ref('perfumes').child(key).remove().then(() => {
-                    alert("تم الحذف بنجاح.");
-                });
-            }
-        }
-
-        function confirmAndDeletePerfume() {
-            const selectBox = document.getElementById('deletePerfumeSelect');
-            const selectedKey = selectBox.value;
-            if (!selectedKey) {
-                alert("الرجاء اختيار عطر من القائمة أولاً لحذفه.");
-            } else if (confirm("⚠️ تحذير صارم: أنت على وشك حذف هذا العطر نهائياً. هل تريد المتابعة؟")) {
-                database.ref('perfumes').child(selectedKey).remove().then(() => {
-                    alert("تم حذف العطر نهائياً.");
-                });
-            }
-        }
-
-        function listenToReviews() {
-            const grid = document.getElementById('reviewsGrid');
-            database.ref('reviews').on('value', (snapshot) => {
-                grid.innerHTML = '';
-                const data = snapshot.val();
-                if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد تقييمات حتى الآن.</p>';
-                    return;
-                }
-                Object.values(data).reverse().forEach((r) => {
-                    const count = r.rating || 5;
-                    let starsHtml = '';
-                    for (let i = 0; i < 5; i++) {
-                        if (i < count) {
-                            starsHtml += '<i class="fa-solid fa-star"></i>';
-                        } else {
-                            starsHtml += '<i class="fa-regular fa-star" style="color:#555;"></i>';
-                        }
-                    }
-
-                    grid.innerHTML += `
-                        <div class="review-card">
-                            <div class="review-stars">${starsHtml}</div>
-                            <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
-                            <p>${escapeHtml(r.text)}</p>
                         </div>
                     `;
                 });
@@ -990,41 +967,48 @@
         function savePublicReview(e) {
             e.preventDefault();
             const name = document.getElementById('publicReviewName').value.trim();
-            const rating = parseInt(document.getElementById('publicReviewRating').value) || 5;
+            const rating = document.getElementById('publicReviewRating').value;
             const text = document.getElementById('publicReviewText').value.trim();
 
-            if (name && text) {
-                database.ref('reviews').push({
-                    name: name,
-                    rating: rating,
-                    text: text,
-                    timestamp: Date.now()
-                }, (error) => {
-                    if (!error) {
-                        document.getElementById('publicReviewForm').reset();
-                        alert("تم نشر تقييمك بنجاح!");
-                    }
+            const newReviewRef = database.ref('reviews').push();
+            newReviewRef.set({ name, rating, text }, (error) => {
+                if (error) {
+                    alert("حدث خطأ أثناء إرسال التقييم: " + error.message);
+                } else {
+                    alert("شكراً لك! تم إرسال تقييمك بنجاح.");
+                    document.getElementById('publicReviewForm').reset();
+                }
+            });
+        }
+
+        function listenToReviews() {
+            const grid = document.getElementById('reviewsGrid');
+            database.ref('reviews').on('value', (snapshot) => {
+                grid.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    grid.innerHTML = '<p style="color:var(--text-gray); grid-column:1/-1; text-align:center;">لا توجد تقييمات حتى الآن. كن أول من يضيف تقييمه!</p>';
+                    return;
+                }
+                Object.values(data).reverse().forEach((r) => {
+                    let stars = '⭐'.repeat(parseInt(r.rating || 5));
+                    grid.innerHTML += `
+                        <div class="review-card">
+                            <h4><i class="fa-solid fa-user-circle"></i> ${escapeHtml(r.name)}</h4>
+                            <div class="review-stars">${stars}</div>
+                            <p>${escapeHtml(r.text)}</p>
+                        </div>
+                    `;
                 });
-            }
-        }
-
-        function openAuthModal() {
-            document.getElementById('authModal').style.display = 'flex';
-        }
-
-        function closeAuthModal() {
-            document.getElementById('authModal').style.display = 'none';
-        }
-
-        function scrollToReviews() {
-            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+            });
         }
 
         function escapeHtml(text) {
-            return text ? text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
+            if (!text) return '';
+            return text.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
         }
-
-        listenToReviews();
     </script>
 </body>
 </html>
